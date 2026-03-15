@@ -1,0 +1,18 @@
+site_name: Things I Learned
+site_description: A personal knowledge log
+site_url: https://markgravestock.github.io/things-i-learned/
+
+theme:
+  name: material
+  features:
+    - navigation.indexes
+    - search.suggest
+    - search.highlight
+
+plugins:
+  - search
+  - tags
+  - meta
+
+exclude_docs: |
+  superpowers/
