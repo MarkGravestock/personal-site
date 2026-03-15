@@ -52,14 +52,16 @@ allowlist-parent                          (aggregator POM / build config)
 
 ### Module responsibilities
 
-| Module | Spring deps | Owns |
-|---|---|---|
-| `allowlist-core` | none | `@AllowList`, `AllowListRegistry`, `MapAllowListRegistry`, `SubjectExtractor` |
-| `allowlist-spring-security` | spring-security-core (compileOnly) | `AllowListAuthorizationManager`, `AllowListMethodSecurityConfiguration`, `AllowListNotFoundException` |
-| `allowlist-spring-config` | spring-boot (compileOnly) | `AllowListProperties`, `AllowListRegistryFactory`, `AllowListSpringConfigConfiguration`, startup validator |
-| `allowlist-spring-boot-starter-boot3` | spring-boot-autoconfigure (compileOnly) | `AllowListBoot3AutoConfiguration`, optional JWT `SecurityFilterChain` |
-| `allowlist-spring-boot-starter-boot4` | spring-boot-autoconfigure (compileOnly) | `AllowListBoot4AutoConfiguration`, optional JWT `SecurityFilterChain` |
-| `allowlist-bom` | — | Version declarations for all of the above |
+| Module | External Spring deps | Project deps | Owns |
+|---|---|---|---|
+| `allowlist-core` | none | none | `@AllowList`, `AllowListRegistry`, `MapAllowListRegistry`, `SubjectExtractor` |
+| `allowlist-spring-security` | spring-security-core (compileOnly) | `allowlist-core` (api) | `AllowListAuthorizationManager`, `AllowListMethodSecurityConfiguration`, `AllowListNotFoundException`, `AllowListMisconfigurationException` |
+| `allowlist-spring-config` | spring-boot (compileOnly), spring-cloud-context (compileOnly, optional) | `allowlist-spring-security` **(api — hard compile dep)** | `AllowListProperties`, `AllowListRegistryFactory`, `AllowListSpringConfigConfiguration`, `AllowListStartupValidator` |
+| `allowlist-spring-boot-starter-boot3` | spring-boot-autoconfigure (compileOnly) | `allowlist-spring-config` (api) | `AllowListBoot3AutoConfiguration`, optional JWT `SecurityFilterChain` |
+| `allowlist-spring-boot-starter-boot4` | spring-boot-autoconfigure (compileOnly) | `allowlist-spring-config` (api) | `AllowListBoot4AutoConfiguration`, optional JWT `SecurityFilterChain` |
+| `allowlist-bom` | — | — | Version declarations for all of the above |
+
+> **Note on `allowlist-spring-config` → `allowlist-spring-security`:** This is a hard `api` (not `compileOnly`) project dependency. `AllowListSpringConfigConfiguration` `@Import`s `AllowListMethodSecurityConfiguration` at compile time. Do not declare this as `compileOnly` in Gradle or `provided` in Maven — it must be on the classpath at runtime.
 
 ---
 
@@ -74,13 +76,14 @@ package com.example.allowlist.core;
 
 import java.lang.annotation.*;
 
-@Target(ElementType.METHOD)
+@Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface AllowList {
     /**
      * The name of the allow-list to check against.
      * Must match a key under allowlist.lists in configuration.
+     * When placed on a class, applies to all public methods of that class.
      */
     String value();
 }
@@ -150,7 +153,7 @@ public interface SubjectExtractor<T> {
 }
 ```
 
-Not used in the default flow (subject comes from `Authentication.getName()`). Included as the extension point for custom extraction (e.g. non-standard claim name). Kept in core so it carries no Spring dependency.
+Reserved for future use. Not wired in the default flow — the subject is read from `Authentication.getName()` as provided by Spring Security's JWT resource server. Included in `core` now to establish the extension point without Spring dependencies. When implemented, the starter will detect a `SubjectExtractor` bean via `@ConditionalOnBean` and pass it to `AllowListAuthorizationManager` in place of `Authentication.getName()`.
 
 ---
 
@@ -159,6 +162,8 @@ Not used in the default flow (subject comes from `Authentication.getName()`). In
 All Spring deps declared `compileOnly` (Gradle) / `provided` (Maven). No Spring JARs shipped in the artifact.
 
 Uses Spring Security 6's `AuthorizationManager<MethodInvocation>` API, introduced in Security 6.0 as the replacement for `AccessDecisionManager`. Expected stable through Security 7.
+
+**`@EnableMethodSecurity` requirement:** For `@AllowList` to be enforced, Spring Security method security must be active in the application context. The starter conditionally declares `@EnableMethodSecurity` if no other configuration activates it (see Section 4). Services that already declare `@EnableMethodSecurity` or `@EnableGlobalMethodSecurity` are unaffected. Without method security active, `@AllowList` annotations are silently ignored — a security defect, not an error. The startup validator does not detect this condition; it is the service's responsibility to ensure method security is enabled.
 
 ### `AllowListAuthorizationManager`
 
@@ -169,13 +174,23 @@ import com.example.allowlist.core.*;
 import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.security.authorization.*;
 import org.springframework.security.core.Authentication;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.util.function.Supplier;
 
 public class AllowListAuthorizationManager
         implements AuthorizationManager<MethodInvocation> {
 
+    private static final Logger log =
+        LoggerFactory.getLogger(AllowListAuthorizationManager.class);
+
     private final AllowListRegistry registry;
 
+    // NOTE: When @RefreshScope is active, Spring injects the CGLIB scoped proxy
+    // for AllowListRegistry — not the raw target object. All calls through this
+    // field are automatically delegated to the current target by the proxy.
+    // Never call AopUtils.getTargetObject(registry) — doing so bypasses the proxy
+    // and captures a stale instance that will not see refreshed config values.
     public AllowListAuthorizationManager(AllowListRegistry registry) {
         this.registry = registry;
     }
@@ -199,12 +214,23 @@ public class AllowListAuthorizationManager
                 "No allow-list configured with name: " + listName);
         }
 
-        return new AuthorizationDecision(registry.isAllowed(listName, subject));
+        boolean allowed = registry.isAllowed(listName, subject);
+        if (!allowed) {
+            // Log list name only — subject is PII and must not appear in logs
+            log.warn("AllowList denial: list='{}' method='{}'",
+                listName,
+                invocation.getMethod().getDeclaringClass().getSimpleName()
+                    + "#" + invocation.getMethod().getName());
+        }
+        return new AuthorizationDecision(allowed);
     }
 
+    // @AllowList is @Target({METHOD, TYPE}).
+    // Method-level annotation takes precedence over class-level.
     private AllowList findAnnotation(MethodInvocation invocation) {
         AllowList ann = invocation.getMethod().getAnnotation(AllowList.class);
         if (ann != null) return ann;
+        // Fall back to class-level annotation (applies to all methods in the class)
         return invocation.getMethod()
                          .getDeclaringClass()
                          .getAnnotation(AllowList.class);
@@ -228,7 +254,39 @@ public class AllowListNotFoundException extends RuntimeException {
 }
 ```
 
-Pure Java exception. Spring's default exception translation maps unchecked exceptions to HTTP 500. Services can add a `@ExceptionHandler` to remap to 403 if preferred, or add a `@ControllerAdvice` globally.
+Two distinct exception types are used to distinguish misconfiguration from runtime access denial:
+
+```java
+package com.example.allowlist.spring.security;
+
+/**
+ * Thrown at RUNTIME when a named list cannot be found during an access check.
+ * Indicates a misconfiguration (e.g. typo in @AllowList value).
+ * Maps to HTTP 500 by default; services may remap to 403 via @ExceptionHandler.
+ */
+public class AllowListNotFoundException extends RuntimeException {
+    public AllowListNotFoundException(String message) {
+        super(message);
+    }
+}
+```
+
+```java
+package com.example.allowlist.spring.security;
+
+/**
+ * Thrown at STARTUP by AllowListStartupValidator when a named list referenced
+ * by an @AllowList annotation has no corresponding entry in configuration.
+ * This is a fatal startup failure, not a per-request condition.
+ */
+public class AllowListMisconfigurationException extends RuntimeException {
+    public AllowListMisconfigurationException(String message) {
+        super(message);
+    }
+}
+```
+
+Using separate exception types allows services to handle startup misconfiguration (fatal, always a bug) differently from runtime not-found (potentially a deploy-time config gap that a `@ControllerAdvice` can handle gracefully).
 
 ### `AllowListMethodSecurityConfiguration`
 
@@ -378,7 +436,9 @@ All beans are `@ConditionalOnMissingBean` — services can override any bean by 
 package com.example.allowlist.config;
 
 import com.example.allowlist.core.*;
-import com.example.allowlist.spring.security.AllowListNotFoundException;
+import com.example.allowlist.spring.security.AllowListMisconfigurationException;
+import org.springframework.aop.support.AopUtils;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import java.lang.reflect.Method;
@@ -395,27 +455,40 @@ public class AllowListStartupValidator
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-        // Scan all beans for @AllowList annotated methods
         String[] beanNames = event.getApplicationContext().getBeanDefinitionNames();
         List<String> unknownLists = new ArrayList<>();
 
         for (String beanName : beanNames) {
             try {
                 Object bean = event.getApplicationContext().getBean(beanName);
-                for (Method method : bean.getClass().getMethods()) {
-                    AllowList ann = method.getAnnotation(AllowList.class);
+                // Use AopUtils.getTargetClass() so that CGLIB-proxied beans
+                // (e.g. @Transactional controllers) expose their real annotations,
+                // not the synthetic methods on the generated proxy subclass.
+                Class<?> targetClass = AopUtils.getTargetClass(bean);
+
+                for (Method method : targetClass.getMethods()) {
+                    // AnnotationUtils.findAnnotation handles annotation inheritance
+                    // and meta-annotations correctly across proxy boundaries.
+                    AllowList ann = AnnotationUtils.findAnnotation(method, AllowList.class);
                     if (ann != null && !registry.listExists(ann.value())) {
                         unknownLists.add(
-                            beanName + "#" + method.getName()
+                            targetClass.getSimpleName() + "#" + method.getName()
                             + " references unknown list: '" + ann.value() + "'");
                     }
+                }
+                // Also check class-level @AllowList
+                AllowList classAnn = AnnotationUtils.findAnnotation(targetClass, AllowList.class);
+                if (classAnn != null && !registry.listExists(classAnn.value())) {
+                    unknownLists.add(
+                        targetClass.getSimpleName()
+                        + " (class-level) references unknown list: '" + classAnn.value() + "'");
                 }
             } catch (Exception ignored) { /* skip uninstantiable beans */ }
         }
 
         if (!unknownLists.isEmpty()) {
-            throw new AllowListNotFoundException(
-                "AllowList configuration errors at startup:\n"
+            throw new AllowListMisconfigurationException(
+                "AllowList configuration errors detected at startup:\n"
                 + String.join("\n", unknownLists));
         }
     }
@@ -438,25 +511,42 @@ import com.example.allowlist.config.AllowListStartupValidator;
 import com.example.allowlist.core.AllowListRegistry;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.*;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.*;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.web.SecurityFilterChain;
 
-@AutoConfiguration
+// Run after Spring Security's own autoconfiguration to avoid SecurityFilterChain
+// ordering conflicts with @ConditionalOnMissingBean resolution.
+@AutoConfiguration(after = SecurityAutoConfiguration.class)
 @ConditionalOnClass(name = {
     "org.springframework.security.web.SecurityFilterChain",
     "com.example.allowlist.core.AllowListRegistry"
 })
 @Import(AllowListSpringConfigConfiguration.class)
+// Activate method security if the service has not already done so.
+// @EnableMethodSecurity is idempotent when declared multiple times —
+// Spring deduplicates it — so this is safe alongside service-owned config.
+@EnableMethodSecurity
 public class AllowListBoot3AutoConfiguration {
 
+    // NOTE: AllowListStartupValidator is registered HERE (in the starter),
+    // not in AllowListSpringConfigConfiguration. This is intentional:
+    // the validator depends on the full bean context being available, which
+    // is only guaranteed at the autoconfiguration layer, not in the shared
+    // config module which may be imported into non-starter contexts.
     @Bean
     public AllowListStartupValidator allowListStartupValidator(
             AllowListRegistry registry) {
         return new AllowListStartupValidator(registry);
     }
 
+    // Optional: library-managed JWT SecurityFilterChain.
+    // Only registered when allowlist.jwt.auto-configure=true AND no other
+    // SecurityFilterChain bean exists. Runs after SecurityAutoConfiguration
+    // to ensure @ConditionalOnMissingBean resolves correctly.
     @Bean
     @ConditionalOnMissingBean(SecurityFilterChain.class)
     @ConditionalOnProperty(
@@ -482,7 +572,60 @@ com.example.allowlist.boot3.AllowListBoot3AutoConfiguration
 
 ### `allowlist-spring-boot-starter-boot4`
 
-Structurally identical. A separate class and `AutoConfiguration.imports` entry. Any Boot 4 / Security 7 DSL divergence is isolated here. Initially ships as a thin duplicate; diverges only if Boot 4 requires it.
+Skeleton class — initially a thin duplicate of the Boot 3 variant. Any Boot 4 / Security 7 DSL divergence is isolated here:
+
+```java
+package com.example.allowlist.boot4;
+
+import com.example.allowlist.config.AllowListSpringConfigConfiguration;
+import com.example.allowlist.config.AllowListStartupValidator;
+import com.example.allowlist.core.AllowListRegistry;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.*;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
+import org.springframework.context.annotation.*;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.web.SecurityFilterChain;
+
+@AutoConfiguration(after = SecurityAutoConfiguration.class)
+@ConditionalOnClass(name = {
+    "org.springframework.security.web.SecurityFilterChain",
+    "com.example.allowlist.core.AllowListRegistry"
+})
+@Import(AllowListSpringConfigConfiguration.class)
+@EnableMethodSecurity
+public class AllowListBoot4AutoConfiguration {
+
+    @Bean
+    public AllowListStartupValidator allowListStartupValidator(
+            AllowListRegistry registry) {
+        return new AllowListStartupValidator(registry);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(SecurityFilterChain.class)
+    @ConditionalOnProperty(
+        prefix = "allowlist.jwt",
+        name = "auto-configure",
+        havingValue = "true",
+        matchIfMissing = false)
+    public SecurityFilterChain allowListJwtFilterChain(HttpSecurity http)
+            throws Exception {
+        // Update this DSL if Spring Security 7 / Boot 4 introduces breaking changes
+        return http
+            .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
+            .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
+            .build();
+    }
+}
+```
+
+Registered via its own `META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports`:
+```
+com.example.allowlist.boot4.AllowListBoot4AutoConfiguration
+```
 
 ### `allowlist.jwt.auto-configure` behaviour
 
@@ -501,34 +644,36 @@ Structurally identical. A separate class and `AutoConfiguration.imports` entry. 
 <project>
   <groupId>com.example</groupId>
   <artifactId>allowlist-bom</artifactId>
-  <version>1.0.0</version>
+  <version>${revision}</version>  <!-- inherits from allowlist-parent via flatten-maven-plugin -->
   <packaging>pom</packaging>
   <dependencyManagement>
     <dependencies>
       <dependency>
         <groupId>com.example</groupId><artifactId>allowlist-core</artifactId>
-        <version>1.0.0</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>com.example</groupId><artifactId>allowlist-spring-security</artifactId>
-        <version>1.0.0</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>com.example</groupId><artifactId>allowlist-spring-config</artifactId>
-        <version>1.0.0</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>com.example</groupId><artifactId>allowlist-spring-boot-starter-boot3</artifactId>
-        <version>1.0.0</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>com.example</groupId><artifactId>allowlist-spring-boot-starter-boot4</artifactId>
-        <version>1.0.0</version>
+        <version>${project.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
 </project>
 ```
+
+> Use `${project.version}` (inherited from `allowlist-parent`) for all artifact version references inside the BOM. Never hardcode version literals — bumping the parent version must be the only change needed for a release. Use the `flatten-maven-plugin` to resolve `${revision}` before publishing.
 
 ### Version trains
 
@@ -576,6 +721,8 @@ strategy:
 ```
 
 Each matrix job overrides `spring-boot.version` at test time. Compile target remains `3.0.0`.
+
+> **Maintenance note:** This matrix is a point-in-time snapshot. It must be updated as new Spring Boot 3.x patch releases ship. Consider automating this via Dependabot or Renovate to open PRs when new Boot versions are released.
 
 ---
 
@@ -754,11 +901,20 @@ No code changes. When `spring-cloud-context` is on the classpath, the `AllowList
 
 ### 2. `@RefreshScope` and CGLIB proxy interactions
 
-`@RefreshScope` wraps the `AllowListRegistry` in a CGLIB scoped proxy. Double-proxying (e.g. from `@Transactional`) can cause unexpected behaviour. The `@ConditionalOnMissingBean` guard lets services override with their own strategy if this becomes a problem.
+`@RefreshScope` wraps the `AllowListRegistry` bean in a CGLIB scoped proxy. Spring injects this proxy — not the underlying target — into `AllowListAuthorizationManager`. After a refresh, the proxy transparently delegates to the newly created target. This works correctly as long as:
+
+- The injected `registry` field in `AllowListAuthorizationManager` is never unwrapped via `AopUtils.getTargetObject()` (the code explicitly guards against this with a comment)
+- The `AllowListRegistry` is accessed only through the interface (not cast to `MapAllowListRegistry`)
+
+Double-proxying (e.g. if a service wraps `AllowListRegistry` in `@Transactional` — unusual but possible) can cause unexpected behaviour. The `@ConditionalOnMissingBean` guard lets services substitute their own registry implementation to avoid this.
 
 ### 3. `SecurityFilterChain` ordering conflicts
 
-`allowlist.jwt.auto-configure=true` registers a `SecurityFilterChain`. It is `@ConditionalOnMissingBean(SecurityFilterChain.class)` — only activates if the service has none. Do not combine `auto-configure=true` with a custom `SecurityFilterChain`.
+`allowlist.jwt.auto-configure=true` registers a `SecurityFilterChain` only if `@ConditionalOnMissingBean(SecurityFilterChain.class)` evaluates to `true`. The `@AutoConfiguration(after = SecurityAutoConfiguration.class)` ordering ensures this evaluation happens after Spring Security's own autoconfiguration, giving service-declared chains time to register first.
+
+**Remaining risk:** If a service declares its `SecurityFilterChain` in a `@Configuration` class that autoconfiguration processes *after* the allowlist starter (unusual but possible with `@AutoConfigureAfter` misuse), the condition may incorrectly evaluate to `true` and register both chains, causing a startup exception.
+
+**Mitigation:** Document clearly: `allowlist.jwt.auto-configure=true` is incompatible with any service-declared `SecurityFilterChain`. It is intended only for services with no existing security configuration at all. Opt-in (`matchIfMissing = false`) prevents accidental activation.
 
 ### 4. Missing list name — misconfiguration vs typo
 
@@ -774,7 +930,9 @@ JWT `sub` values are case-sensitive by spec. YAML config values are whatever is 
 
 ### 7. Thread safety on refresh
 
-`@RefreshScope` proxies handle in-flight request safety: requests in-flight complete against the old instance, new requests get the new instance. This is standard Spring Cloud Config behaviour. No library-specific action needed.
+`@RefreshScope` proxies handle in-flight request safety: requests in-flight hold a reference to the scoped proxy, which continues to delegate to the old target for the duration of that request. New requests after the refresh see the new target. This is standard Spring Cloud Config behaviour and requires no library-specific action.
+
+> See also Issue 2 for the `@RefreshScope` proxy injection model that makes this work correctly.
 
 ### 8. `anyOf` / `allOf` multi-list annotation (future work)
 
@@ -791,6 +949,16 @@ The `AllowListAuthorizationManager` already receives the full `MethodInvocation`
 
 Spring Security's `AuthorizationEventPublisher` automatically fires `AuthorizationDeniedEvent` and `AuthorizationGrantedEvent` when an `AuthorizationManager` returns a decision. Services can listen to these standard events for audit logging with no changes to this library. Document this in the consumer guide.
 
+### 10. Test support module (future work)
+
+A `allowlist-test` module providing testing utilities would reduce boilerplate across 100 consumer services:
+
+- `MockAllowListRegistry` — a test-double `AllowListRegistry` with builder-style configuration
+- `@WithAllowListSubject("alice")` — a `SecurityContext` factory annotation (similar to Spring Security Test's `@WithMockUser`) that populates the JWT subject without needing a full JWT token
+- `AllowListTestAutoConfiguration` — an autoconfiguration that substitutes a controllable registry in tests
+
+Not in scope for the initial release. Add as `allowlist-test` once consumer feedback confirms the patterns needed.
+
 ---
 
 ## Appendix A: Module directory layout (suggested)
@@ -801,15 +969,16 @@ allowlist/
 │   └── pom.xml
 ├── allowlist-core/
 │   └── src/main/java/com/example/allowlist/core/
-│       ├── AllowList.java
+│       ├── AllowList.java              (@Target METHOD + TYPE)
 │       ├── AllowListRegistry.java
 │       ├── MapAllowListRegistry.java
-│       └── SubjectExtractor.java
+│       └── SubjectExtractor.java       (reserved, not yet wired)
 ├── allowlist-spring-security/
 │   └── src/main/java/com/example/allowlist/spring/security/
 │       ├── AllowListAuthorizationManager.java
 │       ├── AllowListMethodSecurityConfiguration.java
-│       └── AllowListNotFoundException.java
+│       ├── AllowListNotFoundException.java         (runtime, per-request)
+│       └── AllowListMisconfigurationException.java (startup, fatal)
 ├── allowlist-spring-config/
 │   └── src/main/java/com/example/allowlist/config/
 │       ├── AllowListProperties.java
