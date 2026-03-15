@@ -43,16 +43,17 @@ git commit -m "chore: add bookmarks/posts and _scripts directories"
 **Files:**
 - Modify: `mkdocs.yml`
 
-Current `mkdocs.yml` has no `markdown_extensions` block. We need to add `attr_list` and `md_in_html` (required for card grids), a `validation` block (to suppress nav warnings for individual bookmark pages), and `Bookmarks` in the nav.
+The existing `mkdocs.yml` already has a `markdown_extensions:` block containing `admonition`. We need to **append** `attr_list` and `md_in_html` to it (required for card grids), add a `validation` block (to suppress nav warnings for individual bookmark pages), and add `Bookmarks` in the nav.
 
 - [ ] **Step 1: Add markdown extensions, validation block, and Bookmarks nav entry**
 
 Open `mkdocs.yml` and apply these changes:
 
-Add after the `plugins:` block:
+Append to the **existing** `markdown_extensions:` block (do NOT create a new one — that would be a duplicate YAML key and would silently drop `admonition`):
 
 ```yaml
 markdown_extensions:
+  - admonition
   - attr_list
   - md_in_html
 ```
@@ -94,7 +95,7 @@ EOF
 - [ ] **Step 3: Verify MkDocs builds locally**
 
 ```bash
-pip install -r requirements.txt
+pip install -r requirements.txt   # installs mkdocs-material (and mkdocs as a dependency)
 mkdocs build --strict
 ```
 
@@ -325,6 +326,7 @@ Writes:
 
 import json
 import os
+import platform
 import re
 import subprocess
 import sys
@@ -375,11 +377,16 @@ def generate_slug(title: str, date: str, existing_slugs: set, bookmark_id: str =
     return slug
 
 
+def _day_fmt() -> str:
+    """Return the platform-appropriate strftime code for a non-zero-padded day."""
+    return "%#d" if platform.system() == "Windows" else "%-d"
+
+
 def _format_date_display(date_str: str) -> str:
     """'2026-03-10' → '10 Mar 2026'"""
     try:
         dt = datetime.strptime(date_str, "%Y-%m-%d")
-        return dt.strftime("%-d %b %Y")  # Linux; Windows needs %#d
+        return dt.strftime(f"{_day_fmt()} %b %Y")
     except ValueError:
         return date_str
 
@@ -433,17 +440,17 @@ def render_card(bm: dict) -> str:
     title = bm["title"]
     tags = bm.get("tags", [])
     domain = bm["domain"]
-    date_short = datetime.strptime(bm["date"], "%Y-%m-%d").strftime("%-d %b")
+    date_short = datetime.strptime(bm["date"], "%Y-%m-%d").strftime(f"{_day_fmt()} %b")
 
     card_lines = [f"- **[{title}](posts/{slug}.md)**", ""]
 
+    # Build meta line: "`#tag1` `#tag2` · domain · 10 Mar" (tags optional)
     meta_parts = []
     if tags:
-        tag_str = " ".join(f"`#{t}`" for t in tags)
-        meta_parts.append(tag_str)
+        meta_parts.append(" ".join(f"`#{t}`" for t in tags))
     meta_parts.append(f"{domain} · {date_short}")
 
-    card_lines.append(f"    {' · '.join(meta_parts) if not tags else tag_str + ' · ' + domain + ' · ' + date_short}")
+    card_lines.append(f"    {' · '.join(meta_parts)}")
     card_lines.append("")
     return "\n".join(card_lines)
 
@@ -537,11 +544,7 @@ def parse_bookmark(item: dict, existing_slugs: set) -> dict:
     slug = generate_slug(title, date, existing_slugs, bookmark_id=raindrop_id)
     existing_slugs.add(slug)
 
-    # Date display: try Linux format, fall back to zero-padded
-    try:
-        date_display = datetime.strptime(date, "%Y-%m-%d").strftime("%-d %b %Y")
-    except ValueError:
-        date_display = datetime.strptime(date, "%Y-%m-%d").strftime("%d %b %Y").lstrip("0")
+    date_display = datetime.strptime(date, "%Y-%m-%d").strftime(f"{_day_fmt()} %b %Y")
 
     return {
         "title": title,
