@@ -1,7 +1,7 @@
 ---
 layout: post
 date: 2026-03-15
-title:  "[Podcast] Andrej Karpathy — AGI is still a decade away"
+title:  "Andrej Karpathy — AGI is still a decade away"
 tags: 
     - ai
     - development
@@ -9,7 +9,7 @@ categories:
     - podcast
 ---
 
-[https://www.dwarkesh.com/p/andrej-karpathy](https://www.dwarkesh.com/p/andrej-karpathy)
+[Podcast on Dwarkesh.com](https://www.dwarkesh.com/p/andrej-karpathy)
 
 Lot's of interesting ideas covered here.
 
