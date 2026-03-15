@@ -4,10 +4,10 @@ I’m a Software Developer who has worked in the manufacturing, financial market
 
 I’ve worked in many:
 
-Technologies
-Product Domains
-Teams, of different sizes and with different organisational structures
-Delivery Methods
+- Technologies
+- Product Domains
+- Teams, of different sizes and with different organisational structures
+- Delivery Methods
 
 ## Links
 
