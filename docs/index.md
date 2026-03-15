@@ -1,12 +1,18 @@
 # Mark Gravestock
 
-[Write a short bio here — who you are, what you work on, what you're interested in.
-One or two sentences is fine.]
+I’m a Software Developer who has worked in the manufacturing, financial markets, commercial property, healthcare, advertising and retail domains.
+
+I’ve worked in many:
+
+Technologies
+Product Domains
+Teams, of different sizes and with different organisational structures
+Delivery Methods
 
 ## Links
 
 - [GitHub](https://github.com/MarkGravestock)
-- [LinkedIn](https://linkedin.com/in/YOUR-LINKEDIN-SLUG)
+- [LinkedIn](https://linkedin.com/in/mark-gravestock)
 
 ## This Site
 
