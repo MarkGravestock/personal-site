@@ -79,9 +79,6 @@ nav:
   - TIL:
       - til/index.md
       - Networking: til/networking/dns-ttl-controls-how-long-resolvers-cache-records.md
-      - Security: til/security/
-      - AI & ML: til/ai-ml/
-      - Hardware: til/hardware/
   - Blog: blog/index.md
   - Tags: tags.md
 
@@ -105,7 +102,14 @@ exclude_docs: |
 
 > LinkedIn: replace `<your-linkedin-slug>` with the path segment from your profile URL (e.g. `markgravestock`).
 
-**Note on `nav:` and TIL categories:** The explicit `nav:` means new TIL categories must be added to `mkdocs.yml` when created. This is a small maintenance cost but gives predictable, correct tab ordering. Each new category entry follows the pattern `- Category Name: til/<category>/`.
+**Note on `nav:` and TIL categories:** MkDocs nav entries must point to actual markdown files — you cannot reference a directory that contains only a `.gitkeep`. Only add a category to nav when it contains at least one real `.md` entry. The pattern for adding a new category with content:
+
+```yaml
+- TIL:
+    - til/index.md
+    - Networking: til/networking/dns-ttl-...md  # list individual files
+    - New Category: til/new-category/my-first-entry.md  # add when first entry exists
+```
 
 **Note on `blog/index.md` in nav:** The blog plugin generates this file at build time. Referencing it in `nav:` is safe — MkDocs resolves it during build.
 
@@ -186,27 +190,30 @@ With `navigation.tabs`, `navigation.indexes`, and the explicit `nav:` block, the
 
 Tab labels come from the `nav:` keys, not from page headings — so "Home" appears in the tab even though `index.md` starts with `# Mark Gravestock`.
 
-**Adding a new TIL category:** Create a new folder under `docs/til/` AND add a corresponding entry under the TIL section in `nav:`.
+**Adding a new TIL category:** Create a new folder under `docs/til/`, add your first entry, then add a nav entry pointing to that file. Empty folders (`.gitkeep` only) cannot be nav targets — only add the nav entry once real content exists.
 
 ```yaml
 - TIL:
     - til/index.md
-    - Networking: til/networking/...
-    - New Category: til/new-category/  # ← add this
+    - Networking: til/networking/dns-ttl-...md
+    - New Category: til/new-category/first-entry.md  # ← add when content exists
 ```
 
 ---
 
 ## Migration Steps (existing content)
 
-1. Move `docs/networking/` → `docs/til/networking/`
-2. Move `docs/security/` → `docs/til/security/`
-3. Move `docs/ai-ml/` → `docs/til/ai-ml/`
-4. Move `docs/hardware/` → `docs/til/hardware/`
-5. Rewrite `docs/index.md` as About Me
-6. Create `docs/til/index.md`
-7. Create `docs/blog/posts/` directory
-8. Update `mkdocs.yml` as above
+1. Create `docs/til/` and `docs/blog/posts/` directories
+2. Move `docs/networking/` → `docs/til/networking/`
+3. Move `docs/security/` → `docs/til/security/`
+4. Move `docs/ai-ml/` → `docs/til/ai-ml/`
+5. Move `docs/hardware/` → `docs/til/hardware/`
+6. Create `docs/til/index.md` (TIL landing page)
+7. Rewrite `docs/index.md` as About Me
+8. Update `mkdocs.yml` with nav block, blog plugin, dark mode, and social links
+9. Add a placeholder blog post or `.gitkeep` under `docs/blog/posts/` to keep the directory in git
+
+**Do NOT create `docs/blog/index.md`** — the blog plugin auto-generates this at build time. Creating it manually will conflict with the plugin.
 
 ---
 
