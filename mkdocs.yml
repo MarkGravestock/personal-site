@@ -25,10 +25,13 @@ nav:
       - til/index.md
       - Networking: til/networking/dns-ttl-controls-how-long-resolvers-cache-records.md
   - Blog: blog/index.md
+  - Bookmarks: bookmarks/index.md
   - Tags: tags.md
 
 markdown_extensions:
   - admonition
+  - attr_list
+  - md_in_html
 
 extra:
   social:
@@ -39,3 +42,7 @@ extra:
 
 exclude_docs: |
   superpowers/
+
+validation:
+  nav:
+    omitted_files: ignore
