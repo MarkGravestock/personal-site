@@ -27,6 +27,9 @@ nav:
   - Blog: blog/index.md
   - Tags: tags.md
 
+markdown_extensions:
+  - admonition
+
 extra:
   social:
     - icon: fontawesome/brands/github
