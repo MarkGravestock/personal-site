@@ -2,3 +2,6 @@ site/
 __pycache__/
 *.pyc
 .DS_Store
+.claude/
+tasks/
+cache-break-*.diff

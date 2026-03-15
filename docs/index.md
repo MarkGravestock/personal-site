@@ -6,7 +6,7 @@ I’ve worked in many:
 
 - Technologies
 - Product Domains
-- Teams, of different sizes and with different organisational structures
+- Teams of different sizes and with different organisational structures
 - Delivery Methods
 
 ## Links
