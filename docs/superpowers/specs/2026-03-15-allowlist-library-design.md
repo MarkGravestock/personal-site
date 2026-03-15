@@ -242,18 +242,6 @@ public class AllowListAuthorizationManager
 - Unknown list name → throws `AllowListNotFoundException` (fail closed). A missing list is a misconfiguration, not a normal access denial. Silent denial would hide wiring errors.
 - Missing annotation on method → pass through (`true`). The interceptor is broad-spectrum; non-annotated methods are not this library's concern.
 
-### `AllowListNotFoundException`
-
-```java
-package com.example.allowlist.spring.security;
-
-public class AllowListNotFoundException extends RuntimeException {
-    public AllowListNotFoundException(String message) {
-        super(message);
-    }
-}
-```
-
 Two distinct exception types are used to distinguish misconfiguration from runtime access denial:
 
 ```java
@@ -294,6 +282,8 @@ Using separate exception types allows services to handle startup misconfiguratio
 package com.example.allowlist.spring.security;
 
 import com.example.allowlist.core.AllowList;
+import org.springframework.aop.Pointcut;
+import org.springframework.aop.support.ComposablePointcut;
 import org.springframework.aop.support.annotation.AnnotationMatchingPointcut;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authorization.method.AuthorizationManagerBeforeMethodInterceptor;
@@ -304,12 +294,20 @@ public class AllowListMethodSecurityConfiguration {
     public AuthorizationManagerBeforeMethodInterceptor allowListMethodInterceptor(
             AllowListAuthorizationManager authorizationManager) {
 
-        return new AuthorizationManagerBeforeMethodInterceptor(
-            new AnnotationMatchingPointcut(null, AllowList.class),
-            authorizationManager
-        );
+        // Match methods directly annotated with @AllowList
+        Pointcut methodAnnotated = new AnnotationMatchingPointcut(null, AllowList.class);
+        // Also match ALL methods on classes annotated with @AllowList (class-level default)
+        Pointcut classAnnotated  = new AnnotationMatchingPointcut(AllowList.class, true);
+        // Union: intercept if EITHER condition holds
+        Pointcut combined = new ComposablePointcut(methodAnnotated).union(classAnnotated);
+
+        return new AuthorizationManagerBeforeMethodInterceptor(combined, authorizationManager);
     }
 }
+
+// Note on precedence: when both class-level and method-level @AllowList are present,
+// AllowListAuthorizationManager.findAnnotation() returns the METHOD-level annotation first.
+// The class-level annotation acts as a default, overridable per-method.
 ```
 
 Deliberately not a `@Configuration` class. It is imported explicitly by the starter's `@AutoConfiguration`, preventing this module from self-activating on the classpath.
@@ -529,6 +527,11 @@ import org.springframework.security.web.SecurityFilterChain;
 // Activate method security if the service has not already done so.
 // @EnableMethodSecurity is idempotent when declared multiple times —
 // Spring deduplicates it — so this is safe alongside service-owned config.
+// CAVEAT: if a service declares @EnableMethodSecurity(prePostEnabled=false)
+// to explicitly disable pre/post annotations, this declaration may conflict
+// depending on processing order. In that case, services should set
+// allowlist.method-security.auto-enable=false (see AllowListProperties) and
+// ensure @EnableMethodSecurity is declared once in their own configuration.
 @EnableMethodSecurity
 public class AllowListBoot3AutoConfiguration {
 
@@ -538,6 +541,7 @@ public class AllowListBoot3AutoConfiguration {
     // is only guaranteed at the autoconfiguration layer, not in the shared
     // config module which may be imported into non-starter contexts.
     @Bean
+    @ConditionalOnMissingBean(AllowListStartupValidator.class)
     public AllowListStartupValidator allowListStartupValidator(
             AllowListRegistry registry) {
         return new AllowListStartupValidator(registry);
@@ -599,6 +603,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class AllowListBoot4AutoConfiguration {
 
     @Bean
+    @ConditionalOnMissingBean(AllowListStartupValidator.class)
     public AllowListStartupValidator allowListStartupValidator(
             AllowListRegistry registry) {
         return new AllowListStartupValidator(registry);
@@ -713,7 +718,8 @@ Both trains share source for `core`, `spring-security`, `spring-config`. They di
 strategy:
   matrix:
     spring-boot-version:
-      - "3.0.13"
+      - "3.0.0"    # compile baseline — must be tested
+      - "3.0.13"   # latest 3.0.x patch
       - "3.1.12"
       - "3.2.10"
       - "3.3.5"
