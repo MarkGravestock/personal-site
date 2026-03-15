@@ -1,8 +1,14 @@
-# Things I Learned
+# Mark Gravestock
 
-A personal log of things I've learned across software, hardware, networking,
-security, AI/ML, and more. Entries are short and focused — things that didn't
-warrant a full blog post but were worth writing down.
+[Write a short bio here — who you are, what you work on, what you're interested in.
+One or two sentences is fine.]
 
-Browse by category using the navigation, or use the search bar to find
-something specific. Use the [Tags](tags.md) index to browse by topic.
+## Links
+
+- [GitHub](https://github.com/MarkGravestock)
+- [LinkedIn](https://linkedin.com/in/YOUR-LINKEDIN-SLUG)
+
+## This Site
+
+- [TIL](til/index.md) — short notes on things I've learned
+- [Blog](blog/index.md) — longer posts
