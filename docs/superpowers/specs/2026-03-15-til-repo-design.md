@@ -37,12 +37,14 @@ til/
 │   └── workflows/
 │       └── deploy.yml
 ├── mkdocs.yml
+├── requirements.txt           # Pinned MkDocs Material version
 └── README.md
 ```
 
 - `docs/` contains all TIL entries organised by category folder
 - Categories are plain directories — create a new folder to create a new category
 - No fixed category list enforced; grows organically
+- Sidebar navigation is alphabetical by default; explicit `nav:` ordering can be added to `mkdocs.yml` later if desired
 
 ---
 
@@ -127,19 +129,30 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write        # required for gh-deploy to push to gh-pages branch
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: 3.x
-      - run: pip install mkdocs-material
+      - run: pip install -r requirements.txt
       - run: mkdocs gh-deploy --force
 ```
 
 - Triggers on every push to `main`
-- Installs MkDocs Material and deploys to the `gh-pages` branch
+- `permissions: contents: write` is required — without it the workflow cannot push to the `gh-pages` branch (GitHub's default token is read-only)
+- Dependencies installed from `requirements.txt` (see below) for reproducible builds
 - GitHub Pages serves from `gh-pages` automatically
 - No secrets or tokens required (uses `GITHUB_TOKEN` implicitly)
+
+**`requirements.txt`** (pin to the version you verify locally):
+
+```
+mkdocs-material==9.5.18
+```
+
+Use `pip install mkdocs-material` locally to get the latest, then pin: `pip freeze | grep mkdocs-material >> requirements.txt`. Update the pin deliberately when you want to upgrade.
 
 ---
 
