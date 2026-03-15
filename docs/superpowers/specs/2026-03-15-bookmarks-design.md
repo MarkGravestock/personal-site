@@ -25,6 +25,7 @@ personal-site/
 │   └── bookmarks/
 │       ├── index.md                              # generated listing (card grid, by month)
 │       └── posts/
+│           ├── .gitkeep                          # ensures directory exists in repo
 │           ├── 2026-03-10-some-title.md          # one page per bookmark
 │           └── ...
 ├── _scripts/
@@ -37,22 +38,30 @@ personal-site/
 ### Data Flow
 
 1. GitHub Actions triggers the Python script daily at 08:00 UTC
-2. Script calls Raindrop API (collection ID: 64296840) with `RAINDROP_TOKEN` secret
-3. Script deletes all existing `docs/bookmarks/posts/*.md` files
+2. Script fetches all pages from the Raindrop API into memory — aborts without commit if any page fails
+3. Script deletes all existing `docs/bookmarks/posts/*.md` files (excluding `.gitkeep`)
 4. Script writes one `.md` file per bookmark to `docs/bookmarks/posts/`
 5. Script writes generated `docs/bookmarks/index.md` (monthly card-grid listing)
 6. Script commits and pushes only if content has changed
-7. Existing deploy GHA (`deploy.yml`) builds and deploys the site to GitHub Pages
+7. Push triggers the existing `deploy.yml` which builds and deploys the site to GitHub Pages
 
 ## Section 2: Script Changes
+
+### Prerequisites
+
+- `docs/bookmarks/posts/.gitkeep` committed to repo (directory must exist before first run)
+- `_scripts/` directory created and `update_bookmarks.py` committed
+- Script uses only Python stdlib (`urllib.request`, `os`, `re`, `datetime`) — no pip install required
 
 ### Individual Bookmark Pages
 
 Each bookmark is written to `docs/bookmarks/posts/<date>-<slug>.md`.
 
-**Slug generation:** title lowercased, non-alphanumeric chars replaced with hyphens, consecutive hyphens collapsed, truncated to 50 chars, trailing hyphens stripped.
+**Slug generation:** title lowercased, non-alphanumeric chars replaced with hyphens, consecutive hyphens collapsed, truncated to 50 chars, trailing hyphens stripped. On slug collision (same date, same truncated title), append the Raindrop bookmark ID suffix (e.g. `-a1b2c3`) to disambiguate.
 
 Example: `"Some Cool Article!"` → `2026-03-10-some-cool-article.md`
+
+**Script uses `os.makedirs("docs/bookmarks/posts", exist_ok=True)`** before writing to handle the case where the directory is absent.
 
 **Page format:**
 ```markdown
@@ -70,6 +79,12 @@ example.com · 10 Mar 2026
 
 > Optional note (omitted if no note)
 ```
+
+Notes:
+- No `layout:` or `categories:` keys — those are Jekyll artifacts
+- Tags are the Raindrop user tags only; system tags (`article`, `link`, `public`, `video`, `image`, `document`, `audio`) are filtered out
+- If a bookmark has no user tags, the `tags:` frontmatter key is omitted entirely
+- The note blockquote is omitted if the bookmark has no note
 
 ### Generated Index Page
 
@@ -103,21 +118,18 @@ A collection of useful things I've found on the web.
 
 Notes:
 - Months appear in reverse chronological order (newest first)
-- Tags rendered as inline code spans (`` `#tag` ``) — visually consistent with MkDocs Material, no custom CSS needed
-- If a bookmark has no tags, the tag span is omitted
-- If a bookmark has no note, the blockquote is omitted from the individual page
+- Tags rendered as inline code spans (`` `#tag` ``) — no custom CSS needed
+- If a bookmark has no tags, the tag span row is omitted from the card
+- Empty months (all bookmarks deleted) are suppressed — no empty `<div class="grid cards">` blocks
+- Links use `.md` extension (`posts/2026-03-10-slug.md`) — MkDocs resolves these to HTML at build time; this is intentional
 
-### Change Detection
+### Change Detection and Error Handling
 
-- Script deletes all `docs/bookmarks/posts/*.md` before regenerating (handles deleted bookmarks)
-- Script compares newly generated `index.md` content against the existing file
-- Only commits if the index content has changed (individual post changes are caught by git diff regardless)
+- **Fetch first:** All Raindrop API pages are fetched into memory before any file is deleted or written. If any page fetch fails (non-200 status, timeout, network error), the script exits non-zero and makes no changes — GHA marks the run as failed
+- **Then delete:** Script deletes `docs/bookmarks/posts/*.md` (excluding `.gitkeep`) only after a successful full fetch
+- **Then write:** Individual pages and index are written
+- Script compares newly generated `index.md` content against the existing file; commits only if changed
 - Commit message format: `chore: update bookmarks YYYY-MM-DD`
-
-### Filtered Tags
-
-System tags excluded from output (same as current implementation):
-`article`, `link`, `public`, `video`, `image`, `document`, `audio`
 
 ## Section 3: `mkdocs.yml` Changes
 
@@ -136,22 +148,33 @@ nav:
   - Tags: tags.md
 ```
 
-### `not_in_nav`
+### Suppress Nav Warnings for Individual Bookmark Pages
 
-Suppress MkDocs warnings for individual bookmark pages (discoverable via tags and search, not nav):
+Individual bookmark pages are built and accessible (via tags index and search) but not listed in `nav:`. Suppress the MkDocs "not in nav" warning:
 
 ```yaml
-not_in_nav: |
-  bookmarks/posts/*
+validation:
+  nav:
+    omitted_files: ignore
 ```
 
-No new plugins required. The existing `tags` plugin picks up bookmark pages via their frontmatter automatically.
+### Markdown Extensions (required for card grid)
+
+The `<div class="grid cards" markdown>` syntax requires `attr_list` and `md_in_html` extensions:
+
+```yaml
+markdown_extensions:
+  - attr_list
+  - md_in_html
+```
+
+Add these to the existing `markdown_extensions` block (or create it if absent).
 
 ## Section 4: GitHub Actions Workflow
 
 ### `update-bookmarks.yml`
 
-Copied from `MarkGravestock.github.io` with output path updated:
+No `pip install` step required — script uses Python stdlib only.
 
 ```yaml
 name: Update Bookmarks
@@ -176,6 +199,8 @@ jobs:
           RAINDROP_TOKEN: ${{ secrets.RAINDROP_TOKEN }}
         run: python _scripts/update_bookmarks.py
 ```
+
+The push from this workflow triggers the existing `deploy.yml`, which builds and deploys the full site. No changes to `deploy.yml` are needed.
 
 ### Secret Migration
 
