@@ -13,13 +13,13 @@ categories:
 
 Lot's of interesting ideas covered here.
 
-> On AGI
-> "The problems are tractable, but they're still difficult"
----
 > Three ways of using AI tool to help to code
-> - Completely rejecting LLMs and writing from scratch 
+> - Completely rejecting LLMs and writing from scratch
 > - Using autocomplete while remaining the architect (his preferred approach)
 > - "Vibe coding" where you prompt the model to implement things and let it do the work.
----
+
+!!! quote "On AGI"
+    "The problems are tractable, but they're still difficult"
+
 !!! quote "On AI coding tools"
-    The models work well for boilerplate code and things that occur frequently on the internet in training data
+    "The models work well for boilerplate code and things that occur frequently on the internet in training data"
