@@ -732,107 +732,437 @@ Each matrix job overrides `spring-boot.version` at test time. Compile target rem
 
 ---
 
-## Section 6: Gradle Notes
+## Section 6: Gradle Build Structure
 
-Gradle is a fully supported build tool. The following shows the Gradle equivalents for key patterns.
+Gradle is a fully supported build tool. This section covers the complete multi-module build, from root configuration through to each module's individual build file and publishing setup. See Appendix B for the full file tree.
 
-### Declaring Spring deps as `compileOnly` (the critical pattern)
+---
 
-```kotlin
-// allowlist-spring-security/build.gradle.kts
-dependencies {
-    api(project(":allowlist-core"))
+### Key principle: `compileOnly` is the load-bearing pattern
 
-    // Spring deps — compile against but do NOT ship in artifact
-    compileOnly("org.springframework.security:spring-security-core")
-    compileOnly("org.springframework.security:spring-security-config")
+Every Spring dependency in the library modules is declared `compileOnly` (Gradle) — the equivalent of Maven `provided`. The library JAR ships **no Spring classes**. The consuming service's own Spring Boot BOM manages all Spring versions on the classpath at runtime. This is what makes the library work across all Boot 3.x minor releases with a single artifact.
 
-    // Versions come from the Spring Boot BOM imported in the root build
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.springframework.security:spring-security-test")
-}
+---
+
+### `gradle.properties` — version and JVM configuration
+
+```properties
+# gradle.properties (root)
+group=com.example
+version=1.0.0
+
+# Compile against minimum supported Boot/Security versions
+springBootVersion=3.0.0
+springCloudVersion=2022.0.0
+
+# JVM
+org.gradle.jvmargs=-Xmx2g -XX:+HeapDumpOnOutOfMemoryError
+org.gradle.parallel=true
+org.gradle.caching=true
 ```
 
-```kotlin
-// allowlist-spring-config/build.gradle.kts
-dependencies {
-    api(project(":allowlist-spring-security"))
-
-    compileOnly("org.springframework.boot:spring-boot-autoconfigure")
-    compileOnly("org.springframework.boot:spring-boot-starter")
-    // Optional: spring-cloud-context for @RefreshScope variant
-    compileOnly("org.springframework.cloud:spring-cloud-context")
-}
+The `springBootVersion` property is the compile baseline. CI overrides it per matrix job to test against later Boot releases:
+```bash
+./gradlew test -PspringBootVersion=3.4.1
 ```
 
-### Root `build.gradle.kts` with Spring Boot BOM import
+---
+
+### `settings.gradle.kts` — subproject declarations
 
 ```kotlin
-// root build.gradle.kts
+// settings.gradle.kts
+rootProject.name = "allowlist"
+
+include(
+    "allowlist-bom",
+    "allowlist-core",
+    "allowlist-spring-security",
+    "allowlist-spring-config",
+    "allowlist-spring-boot-starter-boot3",
+    "allowlist-spring-boot-starter-boot4"
+)
+```
+
+---
+
+### `gradle/libs.versions.toml` — version catalog
+
+The version catalog centralises all external dependency coordinates. Versions are NOT specified here for Spring — those come from the Spring Boot BOM imported in the root build (so the BOM controls them, not the catalog):
+
+```toml
+# gradle/libs.versions.toml
+[versions]
+slf4j = "2.0.9"
+junit = "5.10.0"
+mockito = "5.7.0"
+
+[libraries]
+# Spring deps — no version here; resolved from Spring Boot BOM platform import
+spring-security-core        = { module = "org.springframework.security:spring-security-core" }
+spring-security-config      = { module = "org.springframework.security:spring-security-config" }
+spring-security-test        = { module = "org.springframework.security:spring-security-test" }
+spring-boot-autoconfigure   = { module = "org.springframework.boot:spring-boot-autoconfigure" }
+spring-boot-starter         = { module = "org.springframework.boot:spring-boot-starter" }
+spring-boot-starter-test    = { module = "org.springframework.boot:spring-boot-starter-test" }
+spring-boot-starter-security = { module = "org.springframework.boot:spring-boot-starter-security" }
+spring-boot-starter-oauth2-resource-server = { module = "org.springframework.boot:spring-boot-starter-oauth2-resource-server" }
+spring-cloud-context        = { module = "org.springframework.cloud:spring-cloud-context" }
+
+# Non-Spring
+slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
+
+[plugins]
+# Spring Boot plugin is used only in test modules / integration test projects,
+# NOT in the library modules themselves
+spring-boot = { id = "org.springframework.boot", version = "3.0.0" }
+```
+
+---
+
+### Root `build.gradle.kts` — common configuration for all subprojects
+
+```kotlin
+// build.gradle.kts (root)
 plugins {
-    java
-    `java-library`
+    `java-library` apply false
+    `java-platform` apply false
+    `maven-publish` apply false
 }
+
+// Read springBootVersion from gradle.properties, overridable via -P flag
+val springBootVersion: String by project
+val springCloudVersion: String by project
 
 allprojects {
     group = "com.example"
-    version = "1.0.0"
 
     repositories {
         mavenCentral()
     }
 }
 
+// Apply common configuration to all library modules (not the BOM)
 subprojects {
+    // BOM module uses java-platform, not java-library — skip it
+    if (name == "allowlist-bom") return@subprojects
+
     apply(plugin = "java-library")
+    apply(plugin = "maven-publish")
 
     java {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+        withSourcesJar()
+        withJavadocJar()
     }
 
-    dependencyManagement {
-        // import Spring Boot BOM to control all Spring transitive versions
-        imports {
-            mavenBom("org.springframework.boot:spring-boot-dependencies:3.0.0")
+    // Import Spring Boot BOM as a Gradle platform — controls all Spring
+    // transitive versions for BOTH compile and test classpaths.
+    // Using Gradle-native platform() — no io.spring.dependency-management plugin needed.
+    dependencies {
+        // 'enforcedPlatform' would override consumer versions — use 'platform' instead
+        // so consumers can override if needed
+        implementation(platform("org.springframework.boot:spring-boot-dependencies:$springBootVersion"))
+        implementation(platform("org.springframework.cloud:spring-cloud-dependencies:$springCloudVersion"))
+    }
+
+    tasks.withType<Test> {
+        useJUnitPlatform()
+    }
+
+    publishing {
+        publications {
+            create<MavenPublication>("maven") {
+                from(components["java"])
+            }
         }
     }
 }
 ```
 
-> Note: `dependencyManagement {}` requires the `io.spring.dependency-management` plugin.
-> Alternative (Gradle-native): use `platform("org.springframework.boot:spring-boot-dependencies:3.0.0")` as a `compileOnly platform(...)` dependency.
+> **`platform()` vs `enforcedPlatform()`:** Use `platform()`. It allows consuming services to override Spring versions if needed (e.g. a service already on Boot 3.4 isn't forced down to the library's compile baseline). `enforcedPlatform()` would override consumer BOMs and cause version conflicts.
+
+> **`io.spring.dependency-management` plugin:** Not used here. The Gradle-native `platform()` import is sufficient and avoids the plugin's known interaction issues with `compileOnly` configurations.
+
+---
+
+### `allowlist-bom/build.gradle.kts` — Gradle-native BOM publishing
+
+Gradle publishes BOMs via the `java-platform` plugin. This is the Gradle equivalent of a Maven POM-only `dependencyManagement` artifact:
+
+```kotlin
+// allowlist-bom/build.gradle.kts
+plugins {
+    `java-platform`
+    `maven-publish`
+}
+
+// Allow the platform to declare dependencies (not just constraints)
+javaPlatform {
+    allowDependencies()
+}
+
+dependencies {
+    // Version constraints for all library modules.
+    // project.version is set in gradle.properties and inherited by all subprojects.
+    constraints {
+        api(project(":allowlist-core"))
+        api(project(":allowlist-spring-security"))
+        api(project(":allowlist-spring-config"))
+        api(project(":allowlist-spring-boot-starter-boot3"))
+        api(project(":allowlist-spring-boot-starter-boot4"))
+    }
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("allowlistBom") {
+            from(components["javaPlatform"])
+            artifactId = "allowlist-bom"
+        }
+    }
+}
+```
+
+> **Gradle `java-platform` vs Maven BOM:** They are equivalent — both publish a POM with `<dependencyManagement>` entries only. A service using Maven can import the Gradle-published BOM identically to a Maven-published BOM. A Gradle service uses `implementation(platform("com.example:allowlist-bom:1.0.0"))`.
+
+---
+
+### `allowlist-core/build.gradle.kts` — zero dependencies
+
+```kotlin
+// allowlist-core/build.gradle.kts
+plugins {
+    `java-library`
+}
+
+// No dependencies. Pure Java — no Spring, no logging, no nothing.
+// If SLF4J is ever needed for core logging, add it here as api():
+// api(libs.slf4j.api)
+```
+
+---
+
+### `allowlist-spring-security/build.gradle.kts`
+
+```kotlin
+// allowlist-spring-security/build.gradle.kts
+plugins {
+    `java-library`
+}
+
+dependencies {
+    // Hard compile + runtime dependency — consumers of this module get core too
+    api(project(":allowlist-core"))
+
+    // SLF4J for AllowListAuthorizationManager denial logging
+    api(libs.slf4j.api)
+
+    // Spring Security — compile against but DO NOT ship in artifact.
+    // The consuming service provides these via its own Spring Boot BOM.
+    compileOnly(libs.spring.security.core)
+    compileOnly(libs.spring.security.config)
+
+    // Test — bring Spring Security onto the test classpath
+    // (compileOnly deps are available at test compile time, but NOT test runtime)
+    testImplementation(libs.spring.boot.starter.test)
+    testImplementation(libs.spring.security.test)
+    testImplementation(libs.spring.boot.starter.security)
+}
+```
+
+> **Why `api(libs.slf4j.api)` not `compileOnly`?** SLF4J is a logging facade with a stable binary API. Shipping it as `api` means consumers don't need to re-declare it. The actual logging implementation (Logback, Log4j2) always comes from the consuming application — SLF4J itself is tiny and safe to include.
+
+---
+
+### `allowlist-spring-config/build.gradle.kts`
+
+```kotlin
+// allowlist-spring-config/build.gradle.kts
+plugins {
+    `java-library`
+}
+
+dependencies {
+    // Hard compile dep — spring-security module must be on runtime classpath
+    // (AllowListSpringConfigConfiguration @Imports AllowListMethodSecurityConfiguration)
+    api(project(":allowlist-spring-security"))
+
+    // Spring Boot — compile against but do not ship
+    compileOnly(libs.spring.boot.autoconfigure)
+    compileOnly(libs.spring.boot.starter)
+
+    // Optional — only needed when spring-cloud-context is present at runtime.
+    // compileOnly is correct: the @RefreshScope conditional checks for this class
+    // at runtime via @ConditionalOnClass; if absent, the static variant is used.
+    compileOnly(libs.spring.cloud.context)
+
+    testImplementation(libs.spring.boot.starter.test)
+    testImplementation(libs.spring.boot.starter.security)
+    testImplementation(libs.spring.boot.starter.oauth2.resource.server)
+}
+```
+
+---
+
+### `allowlist-spring-boot-starter-boot3/build.gradle.kts`
+
+```kotlin
+// allowlist-spring-boot-starter-boot3/build.gradle.kts
+plugins {
+    `java-library`
+}
+
+dependencies {
+    // Pulls in spring-security and core transitively
+    api(project(":allowlist-spring-config"))
+
+    // Boot autoconfigure — compile against but do not ship
+    compileOnly(libs.spring.boot.autoconfigure)
+    compileOnly(libs.spring.boot.starter)
+    compileOnly(libs.spring.boot.starter.security)
+    compileOnly(libs.spring.boot.starter.oauth2.resource.server)
+
+    testImplementation(libs.spring.boot.starter.test)
+    testImplementation(libs.spring.security.test)
+    testImplementation(libs.spring.boot.starter.oauth2.resource.server)
+}
+```
+
+The `AutoConfiguration.imports` file lives at:
+```
+src/main/resources/META-INF/spring/
+    org.springframework.boot.autoconfigure.AutoConfiguration.imports
+```
+
+Content:
+```
+com.example.allowlist.boot3.AllowListBoot3AutoConfiguration
+```
+
+---
+
+### `allowlist-spring-boot-starter-boot4/build.gradle.kts`
+
+Identical structure to boot3 starter. Diverges only when Boot 4 / Security 7 require DSL changes:
+
+```kotlin
+// allowlist-spring-boot-starter-boot4/build.gradle.kts
+plugins {
+    `java-library`
+}
+
+dependencies {
+    api(project(":allowlist-spring-config"))
+
+    compileOnly(libs.spring.boot.autoconfigure)
+    compileOnly(libs.spring.boot.starter)
+    compileOnly(libs.spring.boot.starter.security)
+    compileOnly(libs.spring.boot.starter.oauth2.resource.server)
+
+    testImplementation(libs.spring.boot.starter.test)
+    testImplementation(libs.spring.security.test)
+    testImplementation(libs.spring.boot.starter.oauth2.resource.server)
+}
+```
+
+---
+
+### CI compatibility matrix — Gradle
+
+```kotlin
+// In root build.gradle.kts, the springBootVersion property drives the platform import.
+// CI passes -P to override:
+
+subprojects {
+    if (name == "allowlist-bom") return@subprojects
+
+    val springBootVersion: String by project  // reads gradle.properties OR -P flag
+
+    dependencies {
+        implementation(platform("org.springframework.boot:spring-boot-dependencies:$springBootVersion"))
+    }
+}
+```
+
+```yaml
+# .github/workflows/compatibility.yml
+strategy:
+  matrix:
+    spring-boot-version:
+      - "3.0.0"
+      - "3.0.13"
+      - "3.1.12"
+      - "3.2.10"
+      - "3.3.5"
+      - "3.4.1"
+
+steps:
+  - name: Run tests
+    run: ./gradlew test -PspringBootVersion=${{ matrix.spring-boot-version }}
+```
+
+---
 
 ### BOM consumption in a service (Gradle)
 
 ```kotlin
-// consuming service build.gradle.kts
+// consuming-service/build.gradle.kts
 dependencies {
-    // Import the allowlist BOM
+    // Import the allowlist BOM — one version to rule all modules
     implementation(platform("com.example:allowlist-bom:1.0.0"))
 
-    // Then just name the starter — no version needed
+    // No version needed — resolved from the BOM above
     implementation("com.example:allowlist-spring-boot-starter-boot3")
 }
 ```
 
-### Gradle CI matrix override
+---
+
+### Publishing to a repository
 
 ```kotlin
-// Override Spring Boot version at test time via project property
-val springBootVersion = project.findProperty("springBootVersion") as String? ?: "3.0.0"
-
-dependencyManagement {
-    imports {
-        mavenBom("org.springframework.boot:spring-boot-dependencies:$springBootVersion")
+// In root build.gradle.kts — configure repository for all subprojects
+subprojects {
+    publishing {
+        repositories {
+            maven {
+                name = "internal"
+                url = uri(
+                    if (version.toString().endsWith("SNAPSHOT"))
+                        "https://nexus.example.com/repository/snapshots"
+                    else
+                        "https://nexus.example.com/repository/releases"
+                )
+                credentials {
+                    username = System.getenv("NEXUS_USER")
+                    password = System.getenv("NEXUS_PASSWORD")
+                }
+            }
+        }
     }
 }
 ```
 
 ```bash
-# Run tests against a specific Boot version
-./gradlew test -PspringBootVersion=3.4.1
+# Publish all modules + BOM in one command
+./gradlew publishAllPublicationsToInternalRepository
 ```
+
+---
+
+### Notable Gradle vs Maven differences for this project
+
+| Concern | Maven | Gradle |
+|---|---|---|
+| BOM artifact | `<packaging>pom</packaging>` + `<dependencyManagement>` | `java-platform` plugin |
+| `provided` scope | `<scope>provided</scope>` | `compileOnly(...)` |
+| BOM import (library build) | `<scope>import</scope>` in `<dependencyManagement>` | `implementation(platform(...))` |
+| BOM import (service) | `<scope>import</scope>` | `implementation(platform(...))` |
+| Version in BOM entries | `${project.version}` via `flatten-maven-plugin` | `project.version` (resolved at task time, no plugin needed) |
+| Multi-module aggregator | `<packaging>pom</packaging>` parent | `settings.gradle.kts` `include(...)` |
+| Forced vs preferred BOM | `<scope>import</scope>` is additive | `platform()` = preferred, `enforcedPlatform()` = forced |
 
 ---
 
