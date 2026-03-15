@@ -22,6 +22,6 @@ Lot's of interesting ideas covered here.
 > - Using autocomplete while remaining the architect (his preferred approach)
 > - "Vibe coding" where you prompt the model to implement things and let it do the work.
 
+!!! quote "On AI coding tools"
 
-> On AI coding tools 
-> "The models work well for boilerplate code and things that occur frequently on the internet in training data"
+The models work well for boilerplate code and things that occur frequently on the internet in training data
