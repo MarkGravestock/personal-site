@@ -1,10 +1,13 @@
 site_name: Things I Learned
 site_description: A personal knowledge log
-site_url: https://markgravestock.github.io/things-i-learned/
+site_url: https://markgravestock.github.io/personal-site/
 
 theme:
   name: material
+  palette:
+    scheme: slate
   features:
+    - navigation.tabs
     - navigation.indexes
     - search.suggest
     - search.highlight
@@ -13,6 +16,23 @@ plugins:
   - search
   - tags
   - meta
+  - blog:
+      blog_dir: blog
+
+nav:
+  - Home: index.md
+  - TIL:
+      - til/index.md
+      - Networking: til/networking/dns-ttl-controls-how-long-resolvers-cache-records.md
+  - Blog: blog/index.md
+  - Tags: tags.md
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/MarkGravestock
+    - icon: fontawesome/brands/linkedin
+      link: https://linkedin.com/in/YOUR-LINKEDIN-SLUG
 
 exclude_docs: |
   superpowers/
