@@ -6,7 +6,7 @@ I’ve worked in many:
 
 - Technologies
 - Product Domains
-- Teams of different sizes and with different organisational structures
+- Teams of different sizes and different organisational structures
 - Delivery Methods
 
 ## Links
@@ -16,8 +16,8 @@ I’ve worked in many:
 
 ### Other Sites
 
-- [Visualisations](https://visualisations.markgravestock/com) - Some visualisations to help understand concepts
-- [BabelPod](https://babelpod.markgravestock/com) - Vibe coded experiment to help learn new languages using podcasts
+- [Visualisations](https://visualisations.markgravestock.com) - Some visualisations to help understand concepts
+- [BabelPod](https://babelpod.markgravestock.com) - Vibe coded experiment to help learn new languages using podcasts
 
 ## This Site
 
