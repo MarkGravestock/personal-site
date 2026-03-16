@@ -17,7 +17,6 @@ I’ve worked in many:
 ### Other Sites
 
 - [Visualisations](https://visualisations.markgravestock.com) - Some visualisations to help understand concepts
-- [BabelPod](https://babelpod.markgravestock.com) - Vibe coded experiment to help learn new languages using podcasts
 
 ## This Site
 
