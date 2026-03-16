@@ -14,7 +14,14 @@ I’ve worked in many:
 - [GitHub](https://github.com/MarkGravestock)
 - [LinkedIn](https://linkedin.com/in/mark-gravestock)
 
+### Other Sites
+
+- [Visualisations](https://visualisations.markgravestock/com) - Some visualisations to help understand concepts
+- [BabelPod](https://babelpod.markgravestock/com) - Vibe coded experiment to help learn new languages using podcasts
+
 ## This Site
 
 - [TIL](til/index.md) — short notes on things I've learned
 - [Blog](blog/index.md) — longer posts
+- [Bookmark](bookmark/index.md) - Links to things I've found useful
+
