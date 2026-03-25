@@ -1,0 +1,6 @@
+nav:
+  - Home: index.md
+  - TIL: til
+  - Blog: blog
+  - Bookmarks: bookmarks
+  - Tags: tags.md

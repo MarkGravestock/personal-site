@@ -20,12 +20,6 @@ plugins:
   - blog:
       blog_dir: blog
 
-nav:
-  - Home: index.md
-  - TIL: ...til
-  - Blog: blog/index.md
-  - Bookmarks: bookmarks/index.md
-  - Tags: tags.md
 
 markdown_extensions:
   - admonition
