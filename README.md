@@ -1,7 +1,10 @@
-# Mark Gravestock Personal Site
+# Mark Gravestock's Personal Site
 
-## Things I Learned
+Includes:
 
-A personal knowledge log across software, hardware, networking, security, AI/ML, and more.
+- Blog
+- Things I Learned
+- Bookmarks
+- About
 
 Browse at: https://markgravestock.github.iop/personal-site/
