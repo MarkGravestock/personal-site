@@ -31,7 +31,7 @@ extra:
     - icon: fontawesome/brands/github
       link: https://github.com/MarkGravestock
     - icon: fontawesome/brands/linkedin
-      link: https://linkedin.com/in/YOUR-LINKEDIN-SLUG
+      link: https://linkedin.com/in/mark-gravestock
 
 exclude_docs: |
   superpowers/
