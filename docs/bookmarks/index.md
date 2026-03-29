@@ -9,6 +9,14 @@ A collection of useful things I've found on the web.
 
 <div class="grid cards" markdown>
 
+- **[(1) Post | Feed | LinkedIn](posts/2026-03-26-1-post-feed-linkedin.md)**
+
+    `#ai-code` · linkedin.com · 26 Mar
+
+- **[Auto mode for Claude Code](posts/2026-03-25-auto-mode-for-claude-code.md)**
+
+    `#ai` `#claude` · simonwillison.net · 25 Mar
+
 - **[JetBrains names the debt AI agents leave behind - The New Stack](posts/2026-03-13-jetbrains-names-the-debt-ai-agents-leave-behind-th.md)**
 
     `#ai` `#JetBrains` · share.google · 13 Mar
