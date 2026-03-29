@@ -9,7 +9,11 @@ A collection of useful things I've found on the web.
 
 <div class="grid cards" markdown>
 
-- **[(1) Post | Feed | LinkedIn](posts/2026-03-26-1-post-feed-linkedin.md)**
+- **[Allium LLM-native spec language](posts/2026-03-29-allium-llm-native-spec-language.md)**
+
+    `#ai-code` `#spec-driven` · juxt.github.io · 29 Mar
+
+- **[𝗟𝗟𝗠𝘀 𝗔𝗿𝗲 𝗡𝗼𝘁 𝗥𝗲𝗮𝗱𝗶𝗻𝗴 𝗬𝗼𝘂𝗿 𝗖𝗼𝗱𝗲](posts/2026-03-26-.md)**
 
     `#ai-code` · linkedin.com · 26 Mar
 
