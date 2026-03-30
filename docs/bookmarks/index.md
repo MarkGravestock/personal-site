@@ -9,6 +9,14 @@ A collection of useful things I've found on the web.
 
 <div class="grid cards" markdown>
 
+- **[java.evolved Code Snippets | java.evolved](posts/2026-03-30-java-evolved-code-snippets-java-evolved.md)**
+
+    `#java` · javaevolved.github.io · 30 Mar
+
+- **[Programming languages for AI](posts/2026-03-30-programming-languages-for-ai.md)**
+
+    `#ai-code` `#development` · blog.ploeh.dk · 30 Mar
+
 - **[Allium LLM-native spec language](posts/2026-03-29-allium-llm-native-spec-language.md)**
 
     `#ai-code` `#spec-driven` · juxt.github.io · 29 Mar
