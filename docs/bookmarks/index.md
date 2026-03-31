@@ -9,6 +9,14 @@ A collection of useful things I've found on the web.
 
 <div class="grid cards" markdown>
 
+- **[The one where Oskar explains Example Mapping](posts/2026-03-31-the-one-where-oskar-explains-example-mapping.md)**
+
+    `#sdlc` `#specification` · architecture-weekly.com · 31 Mar
+
+- **[GitHub - jasisz/aver: Aver is a programming language for auditable AI-written code: verify in source, deploy with Rust, prove with Lean/Dafny · GitHub](posts/2026-03-30-github-jasisz-aver-aver-is-a-programming-language.md)**
+
+    `#ai-code` `#ai` · github.com · 30 Mar
+
 - **[java.evolved Code Snippets | java.evolved](posts/2026-03-30-java-evolved-code-snippets-java-evolved.md)**
 
     `#java` · javaevolved.github.io · 30 Mar
