@@ -9,6 +9,14 @@ A collection of useful things I've found on the web.
 
 <div class="grid cards" markdown>
 
+- **[everything-claude-code: The agent harness performance optimization system.](posts/2026-03-31-everything-claude-code-the-agent-harness-performan.md)**
+
+    `#ai-code` · share.google · 31 Mar
+
+- **[Are SOLID Principles Still Relevant in the AI Era?](posts/2026-03-31-are-solid-principles-still-relevant-in-the-ai-era.md)**
+
+    `#development` · vladikk.com · 31 Mar
+
 - **[The one where Oskar explains Example Mapping](posts/2026-03-31-the-one-where-oskar-explains-example-mapping.md)**
 
     `#sdlc` `#specification` · architecture-weekly.com · 31 Mar
