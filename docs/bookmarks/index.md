@@ -5,6 +5,20 @@ title: Bookmarks
 
 A collection of useful things I've found on the web.
 
+## April 2026
+
+<div class="grid cards" markdown>
+
+- **[Quoting Soohoon Choi](posts/2026-04-01-quoting-soohoon-choi.md)**
+
+    `#ai` `#ai-code` · simonwillison.net · 1 Apr
+
+- **[Mr. Chatterbox, or, The Modern Prometheus](posts/2026-04-01-mr-chatterbox-or-the-modern-prometheus.md)**
+
+    `#ai` `#training` · estragon.news · 1 Apr
+
+</div>
+
 ## March 2026
 
 <div class="grid cards" markdown>
