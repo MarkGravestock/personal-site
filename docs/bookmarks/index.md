@@ -9,6 +9,18 @@ A collection of useful things I've found on the web.
 
 <div class="grid cards" markdown>
 
+- **[Will AI force code to evolve or make it extinct? - The New Stack](posts/2026-04-02-will-ai-force-code-to-evolve-or-make-it-extinct-th.md)**
+
+    `#ai` `#ai-code` · thenewstack.io · 2 Apr
+
+- **[Harness engineering for coding agent users](posts/2026-04-02-harness-engineering-for-coding-agent-users.md)**
+
+    `#ai` `#ai-code` · martinfowler.com · 2 Apr
+
+- **[What Comes After Systems Thinking](posts/2026-04-02-what-comes-after-systems-thinking.md)**
+
+    `#systems thinking` `#complexity` · open.substack.com · 2 Apr
+
 - **[Quoting Soohoon Choi](posts/2026-04-01-quoting-soohoon-choi.md)**
 
     `#ai` `#ai-code` · simonwillison.net · 1 Apr
