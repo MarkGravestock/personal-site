@@ -23,7 +23,3 @@ jobs:
         env:
           RAINDROP_TOKEN: ${{ secrets.RAINDROP_TOKEN }}
         run: python _scripts/update_bookmarks.py
-      - name: Call deploy
-        uses: ./.github/workflows/deploy.yml
-        with:
-         ref: main
