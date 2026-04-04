@@ -9,6 +9,18 @@ A collection of useful things I've found on the web.
 
 <div class="grid cards" markdown>
 
+- **[Quoting Greg Kroah-Hartman](posts/2026-04-04-quoting-greg-kroah-hartman.md)**
+
+    `#ai-code` `#ai` · simonwillison.net · 4 Apr
+
+- **[How Does Naming Affect Language Models on Code Analysis Tasks](posts/2026-04-03-how-does-naming-affect-language-models-on-code-ana.md)**
+
+    `#ai` `#ai-code` · scirp.org · 3 Apr
+
+- **[Claude Code's source code appears to have leaked: here's what we know | Mike Mason | 10 comments](posts/2026-04-03-claude-code-s-source-code-appears-to-have-leaked-h.md)**
+
+    `#ai-code` `#ai` · linkedin.com · 3 Apr
+
 - **[Will AI force code to evolve or make it extinct? - The New Stack](posts/2026-04-02-will-ai-force-code-to-evolve-or-make-it-extinct-th.md)**
 
     `#ai` `#ai-code` · thenewstack.io · 2 Apr
