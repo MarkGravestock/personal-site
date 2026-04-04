@@ -13,11 +13,15 @@ A collection of useful things I've found on the web.
 
     `#ai-code` `#ai` · simonwillison.net · 4 Apr
 
+- **[How A.I. Helped One Man (and His Brother) Build a $1.8 Billion Company](posts/2026-04-03-how-a-i-helped-one-man-and-his-brother-build-a-1-8.md)**
+
+    nytimes.com · 3 Apr
+
 - **[How Does Naming Affect Language Models on Code Analysis Tasks](posts/2026-04-03-how-does-naming-affect-language-models-on-code-ana.md)**
 
     `#ai` `#ai-code` · scirp.org · 3 Apr
 
-- **[Claude Code's source code appears to have leaked: here's what we know | Mike Mason | 10 comments](posts/2026-04-03-claude-code-s-source-code-appears-to-have-leaked-h.md)**
+- **[Claude Code's source code appears to have leaked: here's what we know](posts/2026-04-03-claude-code-s-source-code-appears-to-have-leaked-h.md)**
 
     `#ai-code` `#ai` · linkedin.com · 3 Apr
 

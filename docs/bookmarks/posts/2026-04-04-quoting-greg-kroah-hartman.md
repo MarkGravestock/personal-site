@@ -10,4 +10,4 @@ tags:
 
 simonwillison.net · 4 Apr 2026
 
-> How AI bug reports have changed from being slop tobeijg valid
+> How AI bug reports have changed from being slop to being valid security issues
