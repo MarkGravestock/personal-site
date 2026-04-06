@@ -9,6 +9,10 @@ A collection of useful things I've found on the web.
 
 <div class="grid cards" markdown>
 
+- **[Eight years of wanting, three months of building with AI - Lalit Maganti](posts/2026-04-06-eight-years-of-wanting-three-months-of-building-wi.md)**
+
+    `#ai-code` `#ai` · lalitm.com · 6 Apr
+
 - **[Quoting Greg Kroah-Hartman](posts/2026-04-04-quoting-greg-kroah-hartman.md)**
 
     `#ai-code` `#ai` · simonwillison.net · 4 Apr
