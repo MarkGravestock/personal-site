@@ -9,6 +9,18 @@ A collection of useful things I've found on the web.
 
 <div class="grid cards" markdown>
 
+- **[The Programmers's Guide to Co-Designing with Agents - david whitney, agile & software practices in london](posts/2026-04-07-the-programmers-s-guide-to-co-designing-with-agent.md)**
+
+    `#ai-code` `#ai` · davidwhitney.co.uk · 7 Apr
+
+- **[Coding Is Dead, Long Live Programming — Ian Cooper - Staccato Signals](posts/2026-04-07-coding-is-dead-long-live-programming-ian-cooper-st.md)**
+
+    `#ai-code` `#ai` · ian-cooper.writeas.com · 7 Apr
+
+- **[After Systems Thinking, Comes Ashby’s Law](posts/2026-04-06-after-systems-thinking-comes-ashby-s-law.md)**
+
+    `#systems thinking` `#complexity` · open.substack.com · 6 Apr
+
 - **[Eight years of wanting, three months of building with AI - Lalit Maganti](posts/2026-04-06-eight-years-of-wanting-three-months-of-building-wi.md)**
 
     `#ai-code` `#ai` · lalitm.com · 6 Apr
