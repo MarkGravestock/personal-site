@@ -9,6 +9,10 @@ A collection of useful things I've found on the web.
 
 <div class="grid cards" markdown>
 
+- **[JUXT Blog: A bug on the dark side of the Moon](posts/2026-04-07-juxt-blog-a-bug-on-the-dark-side-of-the-moon.md)**
+
+    juxt.pro · 7 Apr
+
 - **[The Programmers's Guide to Co-Designing with Agents - david whitney, agile & software practices in london](posts/2026-04-07-the-programmers-s-guide-to-co-designing-with-agent.md)**
 
     `#ai-code` `#ai` · davidwhitney.co.uk · 7 Apr
