@@ -9,6 +9,10 @@ A collection of useful things I've found on the web.
 
 <div class="grid cards" markdown>
 
+- **[tropes.md - Tropes](posts/2026-04-08-tropes-md-tropes.md)**
+
+    `#ai` `#writing` · tropes.md · 8 Apr
+
 - **[JUXT Blog: A bug on the dark side of the Moon](posts/2026-04-07-juxt-blog-a-bug-on-the-dark-side-of-the-moon.md)**
 
     juxt.pro · 7 Apr
