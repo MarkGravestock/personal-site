@@ -6,6 +6,6 @@ tags:
   - writing
 ---
 
-**[tropes.md - Tropes](http://tropes.md)**
+**[tropes.md - Tropes](https://tropes.fyi/tropes-md)**
 
-tropes.md · 8 Apr 2026
+tropes.fyi · 8 Apr 2026
