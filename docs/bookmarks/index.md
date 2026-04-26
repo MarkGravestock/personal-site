@@ -9,6 +9,14 @@ A collection of useful things I've found on the web.
 
 <div class="grid cards" markdown>
 
+- **[GitHub - ChrisTitusTech/winutil: Chris Titus Tech's Windows Utility - Install Programs, Tweaks, Fixes, and Updates · GitHub](posts/2026-04-26-github-christitustech-winutil-chris-titus-tech-s-w.md)**
+
+    github.com · 26 Apr
+
+- **[The Logic of Complex Systems](posts/2026-04-25-the-logic-of-complex-systems.md)**
+
+    open.substack.com · 25 Apr
+
 - **[tropes.md - Tropes](posts/2026-04-08-tropes-md-tropes.md)**
 
     `#ai` `#writing` · tropes.fyi · 8 Apr
