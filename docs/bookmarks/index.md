@@ -9,6 +9,10 @@ A collection of useful things I've found on the web.
 
 <div class="grid cards" markdown>
 
+- **[The Friction That Stopped Waste — Ian Cooper - Staccato Signals](posts/2026-04-28-the-friction-that-stopped-waste-ian-cooper-staccat.md)**
+
+    `#ai` `#ai-code` · ian-cooper.writeas.com · 28 Apr
+
 - **[GitHub - ChrisTitusTech/winutil: Chris Titus Tech's Windows Utility - Install Programs, Tweaks, Fixes, and Updates · GitHub](posts/2026-04-26-github-christitustech-winutil-chris-titus-tech-s-w.md)**
 
     github.com · 26 Apr
