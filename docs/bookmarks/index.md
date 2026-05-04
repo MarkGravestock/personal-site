@@ -5,6 +5,16 @@ title: Bookmarks
 
 A collection of useful things I've found on the web.
 
+## May 2026
+
+<div class="grid cards" markdown>
+
+- **[Feynman — The open source AI research agent](posts/2026-05-03-feynman-the-open-source-ai-research-agent.md)**
+
+    feynman.is · 3 May
+
+</div>
+
 ## April 2026
 
 <div class="grid cards" markdown>
