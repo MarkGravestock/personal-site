@@ -9,6 +9,10 @@ A collection of useful things I've found on the web.
 
 <div class="grid cards" markdown>
 
+- **[webshop-demo/.claude/skills/analyze-flaky-coverage/SKILL.md at main · flounder4130/webshop-demo · GitHub](posts/2026-05-04-webshop-demo-claude-skills-analyze-flaky-coverage.md)**
+
+    `#ai-code` `#skill` · webshop-demo · 4 May
+
 - **[Feynman — The open source AI research agent](posts/2026-05-03-feynman-the-open-source-ai-research-agent.md)**
 
     feynman.is · 3 May
