@@ -9,6 +9,22 @@ A collection of useful things I've found on the web.
 
 <div class="grid cards" markdown>
 
+- **[Performance: 53% faster parse+render, 61% fewer allocations by tobi · Pull Request #2056 · Shopify/liquid · GitHub](posts/2026-05-19-performance-53-faster-parse-render-61-fewer-alloca.md)**
+
+    `#ai-code` · github.com · 19 May
+
+- **[embabel/embabel-air: Airline chatbot demo for Embabel](posts/2026-05-18-embabel-embabel-air-airline-chatbot-demo-for-embab.md)**
+
+    `#spring-boot` `#java` `#ai` · github.com · 18 May
+
+- **[Code Remix Summit: Postcard from Miami - JVM Weekly vol. 175](posts/2026-05-18-code-remix-summit-postcard-from-miami-jvm-weekly-v.md)**
+
+    `#ai` `#java` `#spring-boot` · open.substack.com · 18 May
+
+- **[Agentic Discovery of Neural Architectures: AIRA-Compose and AIRA-Design](posts/2026-05-18-agentic-discovery-of-neural-architectures-aira-com.md)**
+
+    `#ai` · arxiv.org · 18 May
+
 - **[webshop-demo/.claude/skills/analyze-flaky-coverage/SKILL.md at main · flounder4130/webshop-demo · GitHub](posts/2026-05-04-webshop-demo-claude-skills-analyze-flaky-coverage.md)**
 
     `#ai-code` `#skill` · webshop-demo · 4 May
