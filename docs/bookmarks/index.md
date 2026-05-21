@@ -9,6 +9,14 @@ A collection of useful things I've found on the web.
 
 <div class="grid cards" markdown>
 
+- **[Maintainability sensors for coding agents](posts/2026-05-20-maintainability-sensors-for-coding-agents.md)**
+
+    `#ai-code` `#ai` · martinfowler.com · 20 May
+
+- **[Property-Based Testing with Claude \ red.anthropic.com](posts/2026-05-20-property-based-testing-with-claude-red-anthropic-c.md)**
+
+    `#ai-code` `#ai` · red.anthropic.com · 20 May
+
 - **[Performance: 53% faster parse+render, 61% fewer allocations by tobi · Pull Request #2056 · Shopify/liquid · GitHub](posts/2026-05-19-performance-53-faster-parse-render-61-fewer-alloca.md)**
 
     `#ai-code` · github.com · 19 May
