@@ -9,6 +9,10 @@ A collection of useful things I've found on the web.
 
 <div class="grid cards" markdown>
 
+- **[The AI Productivity Paradox Research Report](posts/2026-05-21-the-ai-productivity-paradox-research-report.md)**
+
+    `#ai-code` `#ai` · faros.ai · 21 May
+
 - **[Maintainability sensors for coding agents](posts/2026-05-20-maintainability-sensors-for-coding-agents.md)**
 
     `#ai-code` `#ai` · martinfowler.com · 20 May
