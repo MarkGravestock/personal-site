@@ -4,6 +4,7 @@ date: 2026-05-20
 tags:
   - ai-code
   - ai
+  - testing
 ---
 
 **[Maintainability sensors for coding agents](https://martinfowler.com/articles/sensors-for-coding-agents.html#StaticCodeAnalysisDependencyRules)**
