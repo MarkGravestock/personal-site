@@ -9,6 +9,10 @@ A collection of useful things I've found on the web.
 
 <div class="grid cards" markdown>
 
+- **[The Agent Harness: Turning AI Slop Into Shipping Software - DEV Community](posts/2026-05-28-the-agent-harness-turning-ai-slop-into-shipping-so.md)**
+
+    `#ai-code` `#ai` · dev.to · 28 May
+
 - **[The AI Productivity Paradox Research Report](posts/2026-05-21-the-ai-productivity-paradox-research-report.md)**
 
     `#ai-code` `#ai` · faros.ai · 21 May
