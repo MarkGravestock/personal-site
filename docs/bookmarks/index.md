@@ -9,6 +9,10 @@ A collection of useful things I've found on the web.
 
 <div class="grid cards" markdown>
 
+- **[Make the Domain Explicit: From Procedural Mess to Local Reasoning](posts/2026-05-30-make-the-domain-explicit-from-procedural-mess-to-l.md)**
+
+    open.substack.com · 30 May
+
 - **[The Agent Harness: Turning AI Slop Into Shipping Software - DEV Community](posts/2026-05-28-the-agent-harness-turning-ai-slop-into-shipping-so.md)**
 
     `#ai-code` `#ai` · dev.to · 28 May
