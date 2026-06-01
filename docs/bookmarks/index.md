@@ -9,6 +9,10 @@ A collection of useful things I've found on the web.
 
 <div class="grid cards" markdown>
 
+- **[A Blast from the Past: SDD and the Illusion of Known Scope](posts/2026-05-31-a-blast-from-the-past-sdd-and-the-illusion-of-know.md)**
+
+    `#ai-code` `#spec-driven` · open.substack.com · 31 May
+
 - **[Make the Domain Explicit: From Procedural Mess to Local Reasoning](posts/2026-05-30-make-the-domain-explicit-from-procedural-mess-to-l.md)**
 
     open.substack.com · 30 May
