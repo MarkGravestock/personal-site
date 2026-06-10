@@ -5,6 +5,16 @@ title: Bookmarks
 
 A collection of useful things I've found on the web.
 
+## June 2026
+
+<div class="grid cards" markdown>
+
+- **[CLEAR: Software Design Principles for the Agentic Age](posts/2026-06-09-clear-software-design-principles-for-the-agentic-a.md)**
+
+    `#ai-code` `#ai` · open.substack.com · 9 Jun
+
+</div>
+
 ## May 2026
 
 <div class="grid cards" markdown>
