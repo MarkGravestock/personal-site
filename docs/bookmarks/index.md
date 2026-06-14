@@ -9,6 +9,10 @@ A collection of useful things I've found on the web.
 
 <div class="grid cards" markdown>
 
+- **[DuckDB Ecosystem Newsletter : June 2026](posts/2026-06-14-duckdb-ecosystem-newsletter-june-2026.md)**
+
+    `#olap` `#data` `#datamesh` `#database` · share.google · 14 Jun
+
 - **[CLEAR: Software Design Principles for the Agentic Age](posts/2026-06-09-clear-software-design-principles-for-the-agentic-a.md)**
 
     `#ai-code` `#ai` · open.substack.com · 9 Jun
