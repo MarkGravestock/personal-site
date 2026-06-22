@@ -9,6 +9,10 @@ A collection of useful things I've found on the web.
 
 <div class="grid cards" markdown>
 
+- **[BootUI](posts/2026-06-21-bootui.md)**
+
+    `#spring-boot` · julien-dubois.com · 21 Jun
+
 - **[DuckDB Ecosystem Newsletter : June 2026](posts/2026-06-14-duckdb-ecosystem-newsletter-june-2026.md)**
 
     `#olap` `#data` `#datamesh` `#database` · share.google · 14 Jun
