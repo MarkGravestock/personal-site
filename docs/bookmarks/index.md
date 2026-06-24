@@ -9,6 +9,10 @@ A collection of useful things I've found on the web.
 
 <div class="grid cards" markdown>
 
+- **[Prompt Injection as Role Confusion](posts/2026-06-23-prompt-injection-as-role-confusion.md)**
+
+    role-confusion.github.io · 23 Jun
+
 - **[BootUI](posts/2026-06-21-bootui.md)**
 
     `#spring-boot` · julien-dubois.com · 21 Jun
