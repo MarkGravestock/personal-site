@@ -9,6 +9,14 @@ A collection of useful things I've found on the web.
 
 <div class="grid cards" markdown>
 
+- **[An opinionated (and mainly correct) guide to naming](posts/2026-06-24-an-opinionated-and-mainly-correct-guide-to-naming.md)**
+
+    adamtornhill.substack.com · 24 Jun
+
+- **[I'm seeing more and more people arriving at this kind of workflow. Small steps, testing and reviewing continuously themselves, keeping the agent on a very tight leash. | Jason Gorman](posts/2026-06-24-i-m-seeing-more-and-more-people-arriving-at-this-k.md)**
+
+    `#ai-code` · linkedin.com · 24 Jun
+
 - **[Prompt Injection as Role Confusion](posts/2026-06-23-prompt-injection-as-role-confusion.md)**
 
     role-confusion.github.io · 23 Jun
