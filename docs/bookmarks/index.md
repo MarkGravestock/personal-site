@@ -9,6 +9,14 @@ A collection of useful things I've found on the web.
 
 <div class="grid cards" markdown>
 
+- **[Loop-Engineering-IEEE.pdf](posts/2026-06-25-loop-engineering-ieee-pdf.md)**
+
+    `#ai-code` · drive.google.com · 25 Jun
+
+- **[https://arxiv.org/pdf/2605.18747](posts/2026-06-25-https-arxiv-org-pdf-2605-18747.md)**
+
+    `#ai-code` · arxiv.org · 25 Jun
+
 - **[An opinionated (and mainly correct) guide to naming](posts/2026-06-24-an-opinionated-and-mainly-correct-guide-to-naming.md)**
 
     adamtornhill.substack.com · 24 Jun
