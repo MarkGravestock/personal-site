@@ -9,6 +9,10 @@ A collection of useful things I've found on the web.
 
 <div class="grid cards" markdown>
 
+- **[#gtoolkit #moldabledevelopment | Stephan Eggermont](posts/2026-06-26-gtoolkit-moldabledevelopment-stephan-eggermont.md)**
+
+    linkedin.com · 26 Jun
+
 - **[Loop-Engineering-IEEE.pdf](posts/2026-06-25-loop-engineering-ieee-pdf.md)**
 
     `#ai-code` · drive.google.com · 25 Jun
