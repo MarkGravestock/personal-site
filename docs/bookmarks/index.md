@@ -5,13 +5,35 @@ title: Bookmarks
 
 A collection of useful things I've found on the web.
 
+## July 2026
+
+<div class="grid cards" markdown>
+
+- **[There are two important things happening in AI right now, and nobody has put them together. At the cutting edge, agent builders are converging on the same discovery: the simplest way to give an… | Tony Seale | 177 comments](posts/2026-07-04-there-are-two-important-things-happening-in-ai-rig.md)**
+
+    linkedin.com · 4 Jul
+
+- **[Lately I wrote a few sarcastic posts about AI companies (the virtue-signaling one especially) that got me labeled "another anti-AI guy" in the replies. That's about as far from the truth as it gets.… | Vlad Khononov | 12 comments](posts/2026-07-04-lately-i-wrote-a-few-sarcastic-posts-about-ai-comp.md)**
+
+    linkedin.com · 4 Jul
+
+- **[What the hell is a loop, anyway? | Laurie Voss | 37 comments](posts/2026-07-04-what-the-hell-is-a-loop-anyway-laurie-voss-37-comm.md)**
+
+    linkedin.com · 4 Jul
+
+</div>
+
 ## June 2026
 
 <div class="grid cards" markdown>
 
+- **[Quoting Jon Udell](posts/2026-06-29-quoting-jon-udell.md)**
+
+    `#Inoreader` · simonwillison.net · 29 Jun
+
 - **[#gtoolkit #moldabledevelopment | Stephan Eggermont](posts/2026-06-26-gtoolkit-moldabledevelopment-stephan-eggermont.md)**
 
-    linkedin.com · 26 Jun
+    `#ai-code` `#ai-skeptical` · linkedin.com · 26 Jun
 
 - **[Loop-Engineering-IEEE.pdf](posts/2026-06-25-loop-engineering-ieee-pdf.md)**
 
