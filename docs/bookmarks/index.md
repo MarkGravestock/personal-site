@@ -9,6 +9,18 @@ A collection of useful things I've found on the web.
 
 <div class="grid cards" markdown>
 
+- **[Software Design in the Agentic Age: Place Your Bets](posts/2026-07-07-software-design-in-the-agentic-age-place-your-bets.md)**
+
+    verraes.net · 7 Jul
+
+- **[Welcome to Code for Humans and Machines! - by Adam Tornhill](posts/2026-07-07-welcome-to-code-for-humans-and-machines-by-adam-to.md)**
+
+    adamtornhill.substack.com · 7 Jul
+
+- **[Why Human-Level AI Won't Be Enough](posts/2026-07-06-why-human-level-ai-won-t-be-enough.md)**
+
+    `#ai-code` · open.substack.com · 6 Jul
+
 - **[There are two important things happening in AI right now, and nobody has put them together. At the cutting edge, agent builders are converging on the same discovery: the simplest way to give an… | Tony Seale | 177 comments](posts/2026-07-04-there-are-two-important-things-happening-in-ai-rig.md)**
 
     linkedin.com · 4 Jul
