@@ -9,6 +9,10 @@ A collection of useful things I've found on the web.
 
 <div class="grid cards" markdown>
 
+- **[Wolverine](posts/2026-07-08-wolverine.md)**
+
+    `#dotnet` `#event sourcing` `#events` · wolverinefx.io · 8 Jul
+
 - **[Software Design in the Agentic Age: Place Your Bets](posts/2026-07-07-software-design-in-the-agentic-age-place-your-bets.md)**
 
     verraes.net · 7 Jul
