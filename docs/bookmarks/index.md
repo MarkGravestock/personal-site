@@ -9,6 +9,10 @@ A collection of useful things I've found on the web.
 
 <div class="grid cards" markdown>
 
+- **[Microsoft Agent Framework Workflows | Microsoft Learn](posts/2026-07-08-microsoft-agent-framework-workflows-microsoft-lear.md)**
+
+    `#ai-code` · share.google · 8 Jul
+
 - **[Wolverine](posts/2026-07-08-wolverine.md)**
 
     `#dotnet` `#event sourcing` `#events` · wolverinefx.io · 8 Jul
