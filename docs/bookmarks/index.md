@@ -9,6 +9,10 @@ A collection of useful things I've found on the web.
 
 <div class="grid cards" markdown>
 
+- **[Agentic AI in observability: accelerating root cause analysis - The New Stack](posts/2026-07-11-agentic-ai-in-observability-accelerating-root-caus.md)**
+
+    `#ai-code` `#observability` · share.google · 11 Jul
+
 - **[Microsoft Agent Framework Workflows | Microsoft Learn](posts/2026-07-08-microsoft-agent-framework-workflows-microsoft-lear.md)**
 
     `#ai-code` · share.google · 8 Jul
