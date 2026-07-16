@@ -9,6 +9,14 @@ A collection of useful things I've found on the web.
 
 <div class="grid cards" markdown>
 
+- **[Vault-LD](posts/2026-07-15-vault-ld.md)**
+
+    vault-ld.org · 15 Jul
+
+- **[James Shore: Testing Without Mocks: A Pattern Language](posts/2026-07-15-james-shore-testing-without-mocks-a-pattern-langua.md)**
+
+    jamesshore.com · 15 Jul
+
 - **[Agentic AI in observability: accelerating root cause analysis - The New Stack](posts/2026-07-11-agentic-ai-in-observability-accelerating-root-caus.md)**
 
     `#ai-code` `#observability` · share.google · 11 Jul
