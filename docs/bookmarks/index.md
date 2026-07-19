@@ -9,6 +9,14 @@ A collection of useful things I've found on the web.
 
 <div class="grid cards" markdown>
 
+- **[Big Data File Formats](posts/2026-07-18-big-data-file-formats.md)**
+
+    open.substack.com · 18 Jul
+
+- **[The Collapse at Netflix Signals the End of Audience Capture](posts/2026-07-18-the-collapse-at-netflix-signals-the-end-of-audienc.md)**
+
+    open.substack.com · 18 Jul
+
 - **[Vault-LD](posts/2026-07-15-vault-ld.md)**
 
     vault-ld.org · 15 Jul
