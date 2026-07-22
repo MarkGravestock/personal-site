@@ -9,6 +9,30 @@ A collection of useful things I've found on the web.
 
 <div class="grid cards" markdown>
 
+- **[The New SDLC With Vibe Coding](posts/2026-07-21-the-new-sdlc-with-vibe-coding.md)**
+
+    `#ai-code` `#ai` · kaggle.com · 21 Jul
+
+- **[Agent Harness Engineering](posts/2026-07-21-agent-harness-engineering.md)**
+
+    `#ai-code` `#ai` · addyosmani.com · 21 Jul
+
+- **[The Factory Model: How Coding Agents Changed Software Engineering](posts/2026-07-21-the-factory-model-how-coding-agents-changed-softwa.md)**
+
+    `#ai-code` `#ai` · addyosmani.com · 21 Jul
+
+- **[The New Software Lifecycle](posts/2026-07-21-the-new-software-lifecycle.md)**
+
+    `#ai-code` `#ai` · open.substack.com · 21 Jul
+
+- **[Apache Calcite • Dynamic data management framework](posts/2026-07-20-apache-calcite-dynamic-data-management-framework.md)**
+
+    `#analytics` `#data` · share.google · 20 Jul
+
+- **[Hardwood 1.0: A Fast, Lightweight Apache Parquet Reader for the JVM - Gunnar Morling](posts/2026-07-20-hardwood-1-0-a-fast-lightweight-apache-parquet-rea.md)**
+
+    `#analytics` `#data` `#java` · share.google · 20 Jul
+
 - **[Big Data File Formats](posts/2026-07-18-big-data-file-formats.md)**
 
     open.substack.com · 18 Jul
