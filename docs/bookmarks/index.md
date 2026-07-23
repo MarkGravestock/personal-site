@@ -9,6 +9,14 @@ A collection of useful things I've found on the web.
 
 <div class="grid cards" markdown>
 
+- **[GitHub - punkpeye/awesome-mcp-servers: A collection of MCP servers. · GitHub](posts/2026-07-23-github-punkpeye-awesome-mcp-servers-a-collection-o.md)**
+
+    share.google · 23 Jul
+
+- **[From monolith to Lakebase to LTAP: rethinking the database from storage up | Databricks Blog](posts/2026-07-23-from-monolith-to-lakebase-to-ltap-rethinking-the-d.md)**
+
+    share.google · 23 Jul
+
 - **[The New SDLC With Vibe Coding](posts/2026-07-21-the-new-sdlc-with-vibe-coding.md)**
 
     `#ai-code` `#ai` · kaggle.com · 21 Jul
