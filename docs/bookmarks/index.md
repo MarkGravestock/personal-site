@@ -9,6 +9,14 @@ A collection of useful things I've found on the web.
 
 <div class="grid cards" markdown>
 
+- **[Introduction to Apache Causeway | Baeldung](posts/2026-07-27-introduction-to-apache-causeway-baeldung.md)**
+
+    `#java` `#spring` `#ddd` · share.google · 27 Jul
+
+- **[TBM 429: How To Thrive At Work When You Think Too Much](posts/2026-07-26-tbm-429-how-to-thrive-at-work-when-you-think-too-m.md)**
+
+    open.substack.com · 26 Jul
+
 - **[GitHub - punkpeye/awesome-mcp-servers: A collection of MCP servers. · GitHub](posts/2026-07-23-github-punkpeye-awesome-mcp-servers-a-collection-o.md)**
 
     share.google · 23 Jul
