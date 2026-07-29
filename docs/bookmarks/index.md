@@ -9,6 +9,10 @@ A collection of useful things I've found on the web.
 
 <div class="grid cards" markdown>
 
+- **[Paul Iusztin (@pauliusztin)](posts/2026-07-28-paul-iusztin-pauliusztin.md)**
+
+    `#ai` `#knowledge` · substack.com · 28 Jul
+
 - **[Introduction to Apache Causeway | Baeldung](posts/2026-07-27-introduction-to-apache-causeway-baeldung.md)**
 
     `#java` `#spring` `#ddd` · share.google · 27 Jul
