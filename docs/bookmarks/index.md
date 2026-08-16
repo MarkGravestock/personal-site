@@ -5,6 +5,16 @@ title: Bookmarks
 
 A collection of useful things I've found on the web.
 
+## August 2026
+
+<div class="grid cards" markdown>
+
+- **["Simple Made Easy" - Rich Hickey (2011)](posts/2026-08-16-simple-made-easy-rich-hickey-2011.md)**
+
+    m.youtube.com · 16 Aug
+
+</div>
+
 ## July 2026
 
 <div class="grid cards" markdown>
