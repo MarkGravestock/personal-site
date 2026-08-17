@@ -9,6 +9,10 @@ A collection of useful things I've found on the web.
 
 <div class="grid cards" markdown>
 
+- **[AI Software Development – What Does The Data Say?](posts/2026-08-16-ai-software-development-what-does-the-data-say.md)**
+
+    `#ai` `#ai-code` · codemanship.wordpress.com · 16 Aug
+
 - **["Simple Made Easy" - Rich Hickey (2011)](posts/2026-08-16-simple-made-easy-rich-hickey-2011.md)**
 
     m.youtube.com · 16 Aug
