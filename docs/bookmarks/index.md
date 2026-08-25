@@ -9,6 +9,10 @@ A collection of useful things I've found on the web.
 
 <div class="grid cards" markdown>
 
+- **[Agentic Engineering at Zalando: a snapshot](posts/2026-08-25-agentic-engineering-at-zalando-a-snapshot.md)**
+
+    engineering.zalando.com · 25 Aug
+
 - **[AI Software Development – What Does The Data Say?](posts/2026-08-16-ai-software-development-what-does-the-data-say.md)**
 
     `#ai` `#ai-code` · codemanship.wordpress.com · 16 Aug
