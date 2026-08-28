@@ -9,6 +9,10 @@ A collection of useful things I've found on the web.
 
 <div class="grid cards" markdown>
 
+- **[Making Your Data Ready for Agentic AI](posts/2026-08-27-making-your-data-ready-for-agentic-ai.md)**
+
+    martinfowler.com · 27 Aug
+
 - **[Agentic Engineering at Zalando: a snapshot](posts/2026-08-25-agentic-engineering-at-zalando-a-snapshot.md)**
 
     engineering.zalando.com · 25 Aug
