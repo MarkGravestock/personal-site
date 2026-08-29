@@ -9,6 +9,10 @@ A collection of useful things I've found on the web.
 
 <div class="grid cards" markdown>
 
+- **[Project Loom in IntelliJ IDEA: Virtual Threads, Scoped Values, and Structured Concurrency](posts/2026-08-29-project-loom-in-intellij-idea-virtual-threads-scop.md)**
+
+    blog.jetbrains.com · 29 Aug
+
 - **[Making Your Data Ready for Agentic AI](posts/2026-08-27-making-your-data-ready-for-agentic-ai.md)**
 
     martinfowler.com · 27 Aug
