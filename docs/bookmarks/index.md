@@ -5,6 +5,20 @@ title: Bookmarks
 
 A collection of useful things I've found on the web.
 
+## September 2026
+
+<div class="grid cards" markdown>
+
+- **[I’m running an Opus-level coding agent locally at nearly 2x Claude Opus speed, for free.](posts/2026-09-08-i-m-running-an-opus-level-coding-agent-locally-at.md)**
+
+    ailocal.substack.com · 8 Sep
+
+- **[Autoregressive Language Model on the 6502 Processor - Matt Beton](posts/2026-09-08-autoregressive-language-model-on-the-6502-processo.md)**
+
+    mattbeton.com · 8 Sep
+
+</div>
+
 ## August 2026
 
 <div class="grid cards" markdown>
