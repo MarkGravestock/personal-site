@@ -9,6 +9,10 @@ A collection of useful things I've found on the web.
 
 <div class="grid cards" markdown>
 
+- **[Secret Cold War Supercomputer Was Built for One Job - IEEE Spectrum](posts/2026-09-15-secret-cold-war-supercomputer-was-built-for-one-jo.md)**
+
+    spectrum.ieee.org · 15 Sep
+
 - **[I’m running an Opus-level coding agent locally at nearly 2x Claude Opus speed, for free.](posts/2026-09-08-i-m-running-an-opus-level-coding-agent-locally-at.md)**
 
     ailocal.substack.com · 8 Sep
