@@ -5,6 +5,20 @@ title: Bookmarks
 
 A collection of useful things I've found on the web.
 
+## October 2026
+
+<div class="grid cards" markdown>
+
+- **[The Tokenizer Playground](posts/2026-10-02-the-tokenizer-playground.md)**
+
+    `#ai` · huggingface.co · 2 Oct
+
+- **[Transformer Explainer: LLM Transformer Model Visually Explained](posts/2026-10-02-transformer-explainer-llm-transformer-model-visual.md)**
+
+    `#ai` `#llm` · poloclub.github.io · 2 Oct
+
+</div>
+
 ## September 2026
 
 <div class="grid cards" markdown>
