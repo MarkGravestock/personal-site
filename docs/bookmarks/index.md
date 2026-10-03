@@ -9,6 +9,14 @@ A collection of useful things I've found on the web.
 
 <div class="grid cards" markdown>
 
+- **[Spec-Driven Development: Make Specs Enforceable with ATDD](posts/2026-10-02-spec-driven-development-make-specs-enforceable-wit.md)**
+
+    `#ai` `#ai-code` `#spec-driven` · journal.optivem.com · 2 Oct
+
+- **[Augmented Coding: Beyond the Vibes](posts/2026-10-02-augmented-coding-beyond-the-vibes.md)**
+
+    `#ai` `#ai-code` `#spec-driven` · newsletter.kentbeck.com · 2 Oct
+
 - **[The Tokenizer Playground](posts/2026-10-02-the-tokenizer-playground.md)**
 
     `#ai` · huggingface.co · 2 Oct
