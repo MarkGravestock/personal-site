@@ -9,6 +9,10 @@ A collection of useful things I've found on the web.
 
 <div class="grid cards" markdown>
 
+- **[GOTO Copenhagen 2026: The Fundamentals Didn't Go Anywhere — Kasper Nissen](posts/2026-10-04-goto-copenhagen-2026-the-fundamentals-didn-t-go-an.md)**
+
+    `#ai-code` `#goto` · share.google · 4 Oct
+
 - **[Spec-Driven Development: Make Specs Enforceable with ATDD](posts/2026-10-02-spec-driven-development-make-specs-enforceable-wit.md)**
 
     `#ai` `#ai-code` `#spec-driven` · journal.optivem.com · 2 Oct
