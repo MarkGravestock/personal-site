@@ -9,6 +9,18 @@ A collection of useful things I've found on the web.
 
 <div class="grid cards" markdown>
 
+- **[JEPA: Joint Embedding Predictive Architecture Explained](posts/2026-10-05-jepa-joint-embedding-predictive-architecture-expla.md)**
+
+    share.google · 5 Oct
+
+- **[How I Use OpenCode, Oh-My-OpenCode-Slim, and OpenSpec to Build My Own AI Coding Environment](posts/2026-10-04-how-i-use-opencode-oh-my-opencode-slim-and-openspe.md)**
+
+    `#ai-code` `#opencode` · dataleadsfuture.com · 4 Oct
+
+- **[V covered bbbe a a dfed](posts/2026-10-04-v-covered-bbbe-a-a-dfed.md)**
+
+    `#ai-code` `#quality` · assets-eu.researchsquare.com · 4 Oct
+
 - **[GOTO Copenhagen 2026: The Fundamentals Didn't Go Anywhere — Kasper Nissen](posts/2026-10-04-goto-copenhagen-2026-the-fundamentals-didn-t-go-an.md)**
 
     `#ai-code` `#goto` · share.google · 4 Oct
