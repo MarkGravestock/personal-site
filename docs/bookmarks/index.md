@@ -9,6 +9,26 @@ A collection of useful things I've found on the web.
 
 <div class="grid cards" markdown>
 
+- **[Agensh: Scaling Organizational Intelligence to 1,024 Agents](posts/2026-10-05-agensh-scaling-organizational-intelligence-to-1-02.md)**
+
+    `#ai-code` · academy.dair.ai · 5 Oct
+
+- **[How to evaluate agents - Docs by LangChain](posts/2026-10-05-how-to-evaluate-agents-docs-by-langchain.md)**
+
+    `#evals` `#ai` · docs.langchain.com · 5 Oct
+
+- **[Agentic Evals: A Software Engineer's Guide, Part 1](posts/2026-10-05-agentic-evals-a-software-engineer-s-guide-part-1.md)**
+
+    `#evals` `#ai-code` · yeshas93.substack.com · 5 Oct
+
+- **[The Lifecycle of LLM-as-a-Judge: Building, Aligning, and Monitoring at scale | by Netflix Technology Blog | Sep, 2026 | Medium](posts/2026-10-05-the-lifecycle-of-llm-as-a-judge-building-aligning.md)**
+
+    `#ai-code` `#evals` · netflixtechblog.medium.com · 5 Oct
+
+- **[From Spec-Driven Development to Living Specifications in Java Projects | Foojay.io](posts/2026-10-05-from-spec-driven-development-to-living-specificati.md)**
+
+    `#ai-code` `#spec-driven` · foojay.io · 5 Oct
+
 - **[JEPA: Joint Embedding Predictive Architecture Explained](posts/2026-10-05-jepa-joint-embedding-predictive-architecture-expla.md)**
 
     share.google · 5 Oct
