@@ -9,6 +9,14 @@ A collection of useful things I've found on the web.
 
 <div class="grid cards" markdown>
 
+- **[Follow the Law of Demeter: Reduce the Dependency Surface](posts/2026-10-06-follow-the-law-of-demeter-reduce-the-dependency-su.md)**
+
+    `#design` `#quality` · adamtornhill.substack.com · 6 Oct
+
+- **[Evolutionary Refactoring: Let Agents Invent Codebase-Specific Patterns](posts/2026-10-06-evolutionary-refactoring-let-agents-invent-codebas.md)**
+
+    `#ai-code` `#refactoring` · adamtornhill.substack.com · 6 Oct
+
 - **[Agensh: Scaling Organizational Intelligence to 1,024 Agents](posts/2026-10-05-agensh-scaling-organizational-intelligence-to-1-02.md)**
 
     `#ai-code` · academy.dair.ai · 5 Oct
