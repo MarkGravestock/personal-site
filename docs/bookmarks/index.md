@@ -9,6 +9,10 @@ A collection of useful things I've found on the web.
 
 <div class="grid cards" markdown>
 
+- **[A restaurant example of refactoring from example-based to property-based testing](posts/2026-10-20-a-restaurant-example-of-refactoring-from-example-b.md)**
+
+    `#test` · blog.ploeh.dk · 20 Oct
+
 - **[Follow the Law of Demeter: Reduce the Dependency Surface](posts/2026-10-06-follow-the-law-of-demeter-reduce-the-dependency-su.md)**
 
     `#design` `#quality` · adamtornhill.substack.com · 6 Oct
