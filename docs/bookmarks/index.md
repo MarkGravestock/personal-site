@@ -9,6 +9,10 @@ A collection of useful things I've found on the web.
 
 <div class="grid cards" markdown>
 
+- **[How to effectively debug when you no longer understand the code | by Cindy Sridharan | Oct, 2026 | Medium](posts/2026-10-25-how-to-effectively-debug-when-you-no-longer-unders.md)**
+
+    copyconstruct.medium.com · 25 Oct
+
 - **[A restaurant example of refactoring from example-based to property-based testing](posts/2026-10-20-a-restaurant-example-of-refactoring-from-example-b.md)**
 
     `#test` · blog.ploeh.dk · 20 Oct
