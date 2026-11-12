@@ -5,6 +5,16 @@ title: Bookmarks
 
 A collection of useful things I've found on the web.
 
+## November 2026
+
+<div class="grid cards" markdown>
+
+- **[Tests as data](posts/2026-11-11-tests-as-data.md)**
+
+    martinfowler.com · 11 Nov
+
+</div>
+
 ## October 2026
 
 <div class="grid cards" markdown>
