@@ -9,6 +9,10 @@ A collection of useful things I've found on the web.
 
 <div class="grid cards" markdown>
 
+- **[Deterministic Simulation Testing](posts/2026-11-18-deterministic-simulation-testing.md)**
+
+    martinfowler.com · 18 Nov
+
 - **[Tests as data](posts/2026-11-11-tests-as-data.md)**
 
     martinfowler.com · 11 Nov
